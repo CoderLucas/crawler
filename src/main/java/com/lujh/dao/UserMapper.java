@@ -32,10 +32,10 @@ public interface UserMapper {
     @Insert({
         "insert into user (id, username, ",
         "password, nickname, ",
-        "level)",
+        "role)",
         "values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, ",
         "#{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, ",
-        "#{level,jdbcType=TINYINT})"
+        "#{role,jdbcType=TINYINT})"
     })
     int insert(User record);
 
@@ -48,13 +48,13 @@ public interface UserMapper {
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
         @Result(column="nickname", property="nickname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="level", property="level", jdbcType=JdbcType.TINYINT)
+        @Result(column="role", property="role", jdbcType=JdbcType.TINYINT)
     })
     List<User> selectByExample(UserExample example);
 
     @Select({
         "select",
-        "id, username, password, nickname, level",
+        "id, username, password, nickname, role",
         "from user",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -63,7 +63,7 @@ public interface UserMapper {
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
         @Result(column="nickname", property="nickname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="level", property="level", jdbcType=JdbcType.TINYINT)
+        @Result(column="role", property="role", jdbcType=JdbcType.TINYINT)
     })
     User selectByPrimaryKey(Integer id);
 
@@ -81,7 +81,7 @@ public interface UserMapper {
         "set username = #{username,jdbcType=VARCHAR},",
           "password = #{password,jdbcType=VARCHAR},",
           "nickname = #{nickname,jdbcType=VARCHAR},",
-          "level = #{level,jdbcType=TINYINT}",
+          "role = #{role,jdbcType=TINYINT}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(User record);

@@ -33,10 +33,22 @@ public class UserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
-    public User getByPhone(String username) {
+    public User getByUsername(String username) {
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(username);
+        List<User> users = userMapper.selectByExample(example);
+        if (users.size() > 0) {
+            return users.get(0);
+        }
+        return null;
+    }
+
+    public User login(String username, String password) {
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        criteria.andPasswordEqualTo(password);
         List<User> users = userMapper.selectByExample(example);
         if (users.size() > 0) {
             return users.get(0);

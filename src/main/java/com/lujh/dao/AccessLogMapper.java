@@ -31,11 +31,11 @@ public interface AccessLogMapper {
 
     @Insert({
         "insert into access_log (id, ip, ",
-        "userId, status, ",
-        "createTime)",
+        "userAgent, status, ",
+        "createTime, referer)",
         "values (#{id,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, ",
-        "#{userid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, ",
-        "#{createtime,jdbcType=TIMESTAMP})"
+        "#{useragent,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, ",
+        "#{createtime,jdbcType=TIMESTAMP}, #{referer,jdbcType=VARCHAR})"
     })
     int insert(AccessLog record);
 
@@ -46,24 +46,26 @@ public interface AccessLogMapper {
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="ip", property="ip", jdbcType=JdbcType.VARCHAR),
-        @Result(column="userId", property="userid", jdbcType=JdbcType.INTEGER),
+        @Result(column="userAgent", property="useragent", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
-        @Result(column="createTime", property="createtime", jdbcType=JdbcType.TIMESTAMP)
+        @Result(column="createTime", property="createtime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="referer", property="referer", jdbcType=JdbcType.VARCHAR)
     })
     List<AccessLog> selectByExample(AccessLogExample example);
 
     @Select({
         "select",
-        "id, ip, userId, status, createTime",
+        "id, ip, userAgent, status, createTime, referer",
         "from access_log",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="ip", property="ip", jdbcType=JdbcType.VARCHAR),
-        @Result(column="userId", property="userid", jdbcType=JdbcType.INTEGER),
+        @Result(column="userAgent", property="useragent", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
-        @Result(column="createTime", property="createtime", jdbcType=JdbcType.TIMESTAMP)
+        @Result(column="createTime", property="createtime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="referer", property="referer", jdbcType=JdbcType.VARCHAR)
     })
     AccessLog selectByPrimaryKey(Integer id);
 
@@ -79,9 +81,10 @@ public interface AccessLogMapper {
     @Update({
         "update access_log",
         "set ip = #{ip,jdbcType=VARCHAR},",
-          "userId = #{userid,jdbcType=INTEGER},",
+          "userAgent = #{useragent,jdbcType=VARCHAR},",
           "status = #{status,jdbcType=INTEGER},",
-          "createTime = #{createtime,jdbcType=TIMESTAMP}",
+          "createTime = #{createtime,jdbcType=TIMESTAMP},",
+          "referer = #{referer,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(AccessLog record);

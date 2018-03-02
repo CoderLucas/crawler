@@ -235,63 +235,73 @@ public class AccessLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseridIsNull() {
-            addCriterion("userId is null");
+        public Criteria andUseragentIsNull() {
+            addCriterion("userAgent is null");
             return (Criteria) this;
         }
 
-        public Criteria andUseridIsNotNull() {
-            addCriterion("userId is not null");
+        public Criteria andUseragentIsNotNull() {
+            addCriterion("userAgent is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUseridEqualTo(Integer value) {
-            addCriterion("userId =", value, "userid");
+        public Criteria andUseragentEqualTo(String value) {
+            addCriterion("userAgent =", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotEqualTo(Integer value) {
-            addCriterion("userId <>", value, "userid");
+        public Criteria andUseragentNotEqualTo(String value) {
+            addCriterion("userAgent <>", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThan(Integer value) {
-            addCriterion("userId >", value, "userid");
+        public Criteria andUseragentGreaterThan(String value) {
+            addCriterion("userAgent >", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThanOrEqualTo(Integer value) {
-            addCriterion("userId >=", value, "userid");
+        public Criteria andUseragentGreaterThanOrEqualTo(String value) {
+            addCriterion("userAgent >=", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThan(Integer value) {
-            addCriterion("userId <", value, "userid");
+        public Criteria andUseragentLessThan(String value) {
+            addCriterion("userAgent <", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThanOrEqualTo(Integer value) {
-            addCriterion("userId <=", value, "userid");
+        public Criteria andUseragentLessThanOrEqualTo(String value) {
+            addCriterion("userAgent <=", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridIn(List<Integer> values) {
-            addCriterion("userId in", values, "userid");
+        public Criteria andUseragentLike(String value) {
+            addCriterion("userAgent like", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotIn(List<Integer> values) {
-            addCriterion("userId not in", values, "userid");
+        public Criteria andUseragentNotLike(String value) {
+            addCriterion("userAgent not like", value, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridBetween(Integer value1, Integer value2) {
-            addCriterion("userId between", value1, value2, "userid");
+        public Criteria andUseragentIn(List<String> values) {
+            addCriterion("userAgent in", values, "useragent");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotBetween(Integer value1, Integer value2) {
-            addCriterion("userId not between", value1, value2, "userid");
+        public Criteria andUseragentNotIn(List<String> values) {
+            addCriterion("userAgent not in", values, "useragent");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseragentBetween(String value1, String value2) {
+            addCriterion("userAgent between", value1, value2, "useragent");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseragentNotBetween(String value1, String value2) {
+            addCriterion("userAgent not between", value1, value2, "useragent");
             return (Criteria) this;
         }
 
@@ -412,6 +422,76 @@ public class AccessLogExample {
 
         public Criteria andCreatetimeNotBetween(Date value1, Date value2) {
             addCriterion("createTime not between", value1, value2, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererIsNull() {
+            addCriterion("referer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererIsNotNull() {
+            addCriterion("referer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererEqualTo(String value) {
+            addCriterion("referer =", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererNotEqualTo(String value) {
+            addCriterion("referer <>", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererGreaterThan(String value) {
+            addCriterion("referer >", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererGreaterThanOrEqualTo(String value) {
+            addCriterion("referer >=", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererLessThan(String value) {
+            addCriterion("referer <", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererLessThanOrEqualTo(String value) {
+            addCriterion("referer <=", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererLike(String value) {
+            addCriterion("referer like", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererNotLike(String value) {
+            addCriterion("referer not like", value, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererIn(List<String> values) {
+            addCriterion("referer in", values, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererNotIn(List<String> values) {
+            addCriterion("referer not in", values, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererBetween(String value1, String value2) {
+            addCriterion("referer between", value1, value2, "referer");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefererNotBetween(String value1, String value2) {
+            addCriterion("referer not between", value1, value2, "referer");
             return (Criteria) this;
         }
     }

@@ -36,8 +36,8 @@ public class AccessLogSqlProvider {
             sql.VALUES("ip", "#{ip,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserid() != null) {
-            sql.VALUES("userId", "#{userid,jdbcType=INTEGER}");
+        if (record.getUseragent() != null) {
+            sql.VALUES("userAgent", "#{useragent,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
@@ -46,6 +46,10 @@ public class AccessLogSqlProvider {
         
         if (record.getCreatetime() != null) {
             sql.VALUES("createTime", "#{createtime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getReferer() != null) {
+            sql.VALUES("referer", "#{referer,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -59,9 +63,10 @@ public class AccessLogSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("ip");
-        sql.SELECT("userId");
+        sql.SELECT("userAgent");
         sql.SELECT("status");
         sql.SELECT("createTime");
+        sql.SELECT("referer");
         sql.FROM("access_log");
         applyWhere(sql, example, false);
         
@@ -87,8 +92,8 @@ public class AccessLogSqlProvider {
             sql.SET("ip = #{record.ip,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserid() != null) {
-            sql.SET("userId = #{record.userid,jdbcType=INTEGER}");
+        if (record.getUseragent() != null) {
+            sql.SET("userAgent = #{record.useragent,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
@@ -97,6 +102,10 @@ public class AccessLogSqlProvider {
         
         if (record.getCreatetime() != null) {
             sql.SET("createTime = #{record.createtime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getReferer() != null) {
+            sql.SET("referer = #{record.referer,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -109,9 +118,10 @@ public class AccessLogSqlProvider {
         
         sql.SET("id = #{record.id,jdbcType=INTEGER}");
         sql.SET("ip = #{record.ip,jdbcType=VARCHAR}");
-        sql.SET("userId = #{record.userid,jdbcType=INTEGER}");
+        sql.SET("userAgent = #{record.useragent,jdbcType=VARCHAR}");
         sql.SET("status = #{record.status,jdbcType=INTEGER}");
         sql.SET("createTime = #{record.createtime,jdbcType=TIMESTAMP}");
+        sql.SET("referer = #{record.referer,jdbcType=VARCHAR}");
         
         AccessLogExample example = (AccessLogExample) parameter.get("example");
         applyWhere(sql, example, true);
@@ -126,8 +136,8 @@ public class AccessLogSqlProvider {
             sql.SET("ip = #{ip,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserid() != null) {
-            sql.SET("userId = #{userid,jdbcType=INTEGER}");
+        if (record.getUseragent() != null) {
+            sql.SET("userAgent = #{useragent,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
@@ -136,6 +146,10 @@ public class AccessLogSqlProvider {
         
         if (record.getCreatetime() != null) {
             sql.SET("createTime = #{createtime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getReferer() != null) {
+            sql.SET("referer = #{referer,jdbcType=VARCHAR}");
         }
         
         sql.WHERE("id = #{id,jdbcType=INTEGER}");

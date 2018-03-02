@@ -41,8 +41,8 @@
         <!--<table tableName="stocktradeinfo" domainObjectName="StockTradeInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
         <table tableName="user" domainObjectName="User"></table>
         <table tableName="access_log" domainObjectName="AccessLog"></table>
-        <!--<table tableName="custom_key" domainObjectName="Key"></table>-->
-        <!--<table tableName="goods" domainObjectName="Goods"></table>-->
-        <!--<table tableName="comment" domainObjectName="Comment"></table>-->
+        <table tableName="custom_key" domainObjectName="Key"></table>
+        <table tableName="goods" domainObjectName="Goods"></table>
+        <table tableName="comment" domainObjectName="Comment"></table>
     </context>
 </generatorConfiguration>

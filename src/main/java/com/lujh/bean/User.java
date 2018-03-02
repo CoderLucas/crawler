@@ -9,7 +9,7 @@ public class User {
 
     private String nickname;
 
-    private Byte level;
+    private Byte role;
 
     public Integer getId() {
         return id;
@@ -43,11 +43,11 @@ public class User {
         this.nickname = nickname == null ? null : nickname.trim();
     }
 
-    public Byte getLevel() {
-        return level;
+    public Byte getRole() {
+        return role;
     }
 
-    public void setLevel(Byte level) {
-        this.level = level;
+    public void setRole(Byte role) {
+        this.role = role;
     }
 }

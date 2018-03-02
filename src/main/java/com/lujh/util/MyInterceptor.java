@@ -1,10 +1,15 @@
 package com.lujh.util;
 
+import com.lujh.bean.AccessLog;
+import com.lujh.service.AccessLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +18,8 @@ import java.util.Map;
  */
 public class MyInterceptor implements HandlerInterceptor {
 
-    Map<String, Integer> ipMap = new HashMap<>();
+    @Autowired
+    private AccessLogService accessLogService;
 
     /**
      * 在请求处理之前进行调用（Controller方法调用之前）调用
@@ -23,10 +29,15 @@ public class MyInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String ip = getIpAddr(httpServletRequest);
-        System.out.println(ip);
-
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        String ip = getIpAddr(request);
+        AccessLog accessLog = new AccessLog();
+        accessLog.setIp(ip);
+        accessLog.setReferer(request.getHeader("Referer"));
+        accessLog.setUseragent(request.getHeader("User-Agent"));
+        accessLog.setCreatetime(new Date());
+        accessLog.setStatus(1);
+        accessLogService.add(accessLog);
         return true;
     }
 
@@ -46,7 +57,7 @@ public class MyInterceptor implements HandlerInterceptor {
      * @param request
      * @return
      */
-    public static String getIpAddr(HttpServletRequest request) {
+    private static String getIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");

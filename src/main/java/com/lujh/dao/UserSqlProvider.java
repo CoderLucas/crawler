@@ -44,8 +44,8 @@ public class UserSqlProvider {
             sql.VALUES("nickname", "#{nickname,jdbcType=VARCHAR}");
         }
         
-        if (record.getLevel() != null) {
-            sql.VALUES("level", "#{level,jdbcType=TINYINT}");
+        if (record.getRole() != null) {
+            sql.VALUES("role", "#{role,jdbcType=TINYINT}");
         }
         
         return sql.toString();
@@ -61,7 +61,7 @@ public class UserSqlProvider {
         sql.SELECT("username");
         sql.SELECT("password");
         sql.SELECT("nickname");
-        sql.SELECT("level");
+        sql.SELECT("role");
         sql.FROM("user");
         applyWhere(sql, example, false);
         
@@ -95,8 +95,8 @@ public class UserSqlProvider {
             sql.SET("nickname = #{record.nickname,jdbcType=VARCHAR}");
         }
         
-        if (record.getLevel() != null) {
-            sql.SET("level = #{record.level,jdbcType=TINYINT}");
+        if (record.getRole() != null) {
+            sql.SET("role = #{record.role,jdbcType=TINYINT}");
         }
         
         applyWhere(sql, example, true);
@@ -111,7 +111,7 @@ public class UserSqlProvider {
         sql.SET("username = #{record.username,jdbcType=VARCHAR}");
         sql.SET("password = #{record.password,jdbcType=VARCHAR}");
         sql.SET("nickname = #{record.nickname,jdbcType=VARCHAR}");
-        sql.SET("level = #{record.level,jdbcType=TINYINT}");
+        sql.SET("role = #{record.role,jdbcType=TINYINT}");
         
         UserExample example = (UserExample) parameter.get("example");
         applyWhere(sql, example, true);
@@ -134,8 +134,8 @@ public class UserSqlProvider {
             sql.SET("nickname = #{nickname,jdbcType=VARCHAR}");
         }
         
-        if (record.getLevel() != null) {
-            sql.SET("level = #{level,jdbcType=TINYINT}");
+        if (record.getRole() != null) {
+            sql.SET("role = #{role,jdbcType=TINYINT}");
         }
         
         sql.WHERE("id = #{id,jdbcType=INTEGER}");

@@ -374,63 +374,63 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andLevelIsNull() {
-            addCriterion("level is null");
+        public Criteria andRoleIsNull() {
+            addCriterion("role is null");
             return (Criteria) this;
         }
 
-        public Criteria andLevelIsNotNull() {
-            addCriterion("level is not null");
+        public Criteria andRoleIsNotNull() {
+            addCriterion("role is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLevelEqualTo(Byte value) {
-            addCriterion("level =", value, "level");
+        public Criteria andRoleEqualTo(Byte value) {
+            addCriterion("role =", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelNotEqualTo(Byte value) {
-            addCriterion("level <>", value, "level");
+        public Criteria andRoleNotEqualTo(Byte value) {
+            addCriterion("role <>", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelGreaterThan(Byte value) {
-            addCriterion("level >", value, "level");
+        public Criteria andRoleGreaterThan(Byte value) {
+            addCriterion("role >", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelGreaterThanOrEqualTo(Byte value) {
-            addCriterion("level >=", value, "level");
+        public Criteria andRoleGreaterThanOrEqualTo(Byte value) {
+            addCriterion("role >=", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelLessThan(Byte value) {
-            addCriterion("level <", value, "level");
+        public Criteria andRoleLessThan(Byte value) {
+            addCriterion("role <", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelLessThanOrEqualTo(Byte value) {
-            addCriterion("level <=", value, "level");
+        public Criteria andRoleLessThanOrEqualTo(Byte value) {
+            addCriterion("role <=", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelIn(List<Byte> values) {
-            addCriterion("level in", values, "level");
+        public Criteria andRoleIn(List<Byte> values) {
+            addCriterion("role in", values, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelNotIn(List<Byte> values) {
-            addCriterion("level not in", values, "level");
+        public Criteria andRoleNotIn(List<Byte> values) {
+            addCriterion("role not in", values, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelBetween(Byte value1, Byte value2) {
-            addCriterion("level between", value1, value2, "level");
+        public Criteria andRoleBetween(Byte value1, Byte value2) {
+            addCriterion("role between", value1, value2, "role");
             return (Criteria) this;
         }
 
-        public Criteria andLevelNotBetween(Byte value1, Byte value2) {
-            addCriterion("level not between", value1, value2, "level");
+        public Criteria andRoleNotBetween(Byte value1, Byte value2) {
+            addCriterion("role not between", value1, value2, "role");
             return (Criteria) this;
         }
     }

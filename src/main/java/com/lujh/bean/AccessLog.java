@@ -7,11 +7,13 @@ public class AccessLog {
 
     private String ip;
 
-    private Integer userid;
+    private String useragent;
 
     private Integer status;
 
     private Date createtime;
+
+    private String referer;
 
     public Integer getId() {
         return id;
@@ -29,12 +31,12 @@ public class AccessLog {
         this.ip = ip == null ? null : ip.trim();
     }
 
-    public Integer getUserid() {
-        return userid;
+    public String getUseragent() {
+        return useragent;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUseragent(String useragent) {
+        this.useragent = useragent == null ? null : useragent.trim();
     }
 
     public Integer getStatus() {
@@ -51,5 +53,13 @@ public class AccessLog {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public String getReferer() {
+        return referer;
+    }
+
+    public void setReferer(String referer) {
+        this.referer = referer == null ? null : referer.trim();
     }
 }
