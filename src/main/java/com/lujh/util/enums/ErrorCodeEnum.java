@@ -1,4 +1,4 @@
-package com.lujh.util;
+package com.lujh.util.enums;
 
 /**
  * Created by lujianhao on 2017/12/28.

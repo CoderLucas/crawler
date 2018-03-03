@@ -45,7 +45,7 @@ public class GoodsOut {
         this.introduction = goods.getIntroduction();
         this.number = goods.getNumber();
         this.image = goods.getImage();
-        this.introductionimage = ListUtil.toList(goods.getIntroductionimage());
+        this.introductionimage = ListUtil.fromString(goods.getIntroductionimage());
         this.sale = goods.getSale();
     }
 

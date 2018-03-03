@@ -1,7 +1,9 @@
 package com.lujh.service;
 
 import com.lujh.bean.Key;
+import com.lujh.bean.KeyExample;
 import com.lujh.dao.KeyMapper;
+import com.lujh.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,14 @@ public class KeyService {
 
     public Key get(Integer id) {
         return keyMapper.selectByPrimaryKey(id);
+    }
+
+    public List<String> getValueByKey(String keyStr) {
+        KeyExample example = new KeyExample();
+        KeyExample.Criteria criteria = example.createCriteria();
+        criteria.andKeystrEqualTo(keyStr);
+        Key key = keyMapper.selectByExample(example).get(0);
+        return ListUtil.fromString(key.getValue());
     }
 
     public List<Key> getAll() {

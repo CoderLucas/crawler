@@ -2,6 +2,8 @@ package com.lujh.util;
 
 import com.lujh.bean.AccessLog;
 import com.lujh.service.AccessLogService;
+import com.lujh.service.KeyService;
+import com.lujh.util.enums.AccessLogEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +22,8 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Autowired
     private AccessLogService accessLogService;
+    @Autowired
+    private KeyService keyService;
 
     /**
      * 在请求处理之前进行调用（Controller方法调用之前）调用
@@ -36,7 +40,18 @@ public class MyInterceptor implements HandlerInterceptor {
         accessLog.setReferer(request.getHeader("Referer"));
         accessLog.setUseragent(request.getHeader("User-Agent"));
         accessLog.setCreatetime(new Date());
-        accessLog.setStatus(1);
+
+        // IP次数验证
+        int ipLimit = Integer.valueOf(keyService.getValueByKey("ip_limit").get(0));
+        int ipAccess = accessLogService.countByIP(ip, new Date(System.currentTimeMillis() - 10 * 60), new Date());
+        if (ipAccess >= ipLimit) {
+            accessLog.setStatus(AccessLogEnum.FAIL.getValue());
+            accessLogService.add(accessLog);
+            return false;
+        }
+
+
+        accessLog.setStatus(AccessLogEnum.SUCCESS.getValue());
         accessLogService.add(accessLog);
         return true;
     }

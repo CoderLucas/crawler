@@ -7,7 +7,7 @@ import java.util.List;
  * Created by lujianhao on 2018/3/2.
  */
 public enum AccessLogEnum {
-    REFUSE(0),      // 拒绝访问
+    FAIL(0),      // 拒绝访问
     SUCCESS(1);     // 请求成功
 
     private int value;

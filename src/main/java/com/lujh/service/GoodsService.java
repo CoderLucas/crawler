@@ -43,6 +43,6 @@ public class GoodsService {
         if (type > 0) {
             criteria.andTypeEqualTo((byte) type.intValue());
         }
-        return goodsMapper.selectByExample(null);
+        return goodsMapper.selectByExample(example);
     }
 }
