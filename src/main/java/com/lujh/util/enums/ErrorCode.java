@@ -3,7 +3,7 @@ package com.lujh.util.enums;
 /**
  * Created by lujianhao on 2017/12/28.
  */
-public enum ErrorCodeEnum {
+public enum ErrorCode {
 
     //用户相关 error
     USER_PHONE_ERROR(1000, "手机号错误"),
@@ -14,7 +14,7 @@ public enum ErrorCodeEnum {
     int code;
     private String message;
 
-    ErrorCodeEnum(int code, String message) {
+    ErrorCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

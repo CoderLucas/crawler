@@ -3,21 +3,20 @@ package com.lujh.util;
 import com.lujh.bean.AccessLog;
 import com.lujh.service.AccessLogService;
 import com.lujh.service.KeyService;
-import com.lujh.util.enums.AccessLogEnum;
+import com.lujh.util.enums.AccessLogStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by lujianhao on 2018/2/9.
  */
+@Component
 public class MyInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -43,15 +42,14 @@ public class MyInterceptor implements HandlerInterceptor {
 
         // IP次数验证
         int ipLimit = Integer.valueOf(keyService.getValueByKey("ip_limit").get(0));
-        int ipAccess = accessLogService.countByIP(ip, new Date(System.currentTimeMillis() - 10 * 60), new Date());
+        int ipAccess = accessLogService.countByIP(ip,AccessLogStatus.SUCCESS, new Date(System.currentTimeMillis() - 10 * 60 * 1000), new Date());
         if (ipAccess >= ipLimit) {
-            accessLog.setStatus(AccessLogEnum.FAIL.getValue());
+            accessLog.setStatus(AccessLogStatus.FAIL.getValue());
             accessLogService.add(accessLog);
             return false;
         }
 
-
-        accessLog.setStatus(AccessLogEnum.SUCCESS.getValue());
+        accessLog.setStatus(AccessLogStatus.SUCCESS.getValue());
         accessLogService.add(accessLog);
         return true;
     }

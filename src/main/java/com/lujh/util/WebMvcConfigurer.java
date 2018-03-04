@@ -1,5 +1,6 @@
 package com.lujh.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,14 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
 
-    @Bean
-    public HandlerInterceptor getMyInterceptor(){
-        return new MyInterceptor();
-    }
+
+    @Autowired
+    private HandlerInterceptor handlerInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(handlerInterceptor).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
 }

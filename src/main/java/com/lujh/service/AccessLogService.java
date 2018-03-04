@@ -3,6 +3,7 @@ package com.lujh.service;
 import com.lujh.bean.AccessLog;
 import com.lujh.bean.AccessLogExample;
 import com.lujh.dao.AccessLogMapper;
+import com.lujh.util.enums.AccessLogStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class AccessLogService {
     private AccessLogMapper accessLogMapper;
 
     public void add(AccessLog accessLog) {
+        if (accessLog.getReferer() == null) {
+            accessLog.setReferer("");
+        }
         accessLogMapper.insert(accessLog);
     }
 
@@ -33,23 +37,25 @@ public class AccessLogService {
         return accessLogMapper.selectByPrimaryKey(id);
     }
 
-    public Integer countByIP(String ip, Date from, Date to) {
-        AccessLogExample example = accessLogExample(ip, "", "", from, to);
-        return (int) accessLogMapper.countByExample(example);
-    }
-
-    public Integer countByUserAgent(String userAgent, Date from, Date to) {
-        AccessLogExample example = accessLogExample("", userAgent, "", from, to);
-        return (int) accessLogMapper.countByExample(example);
-    }
-
-    public Integer countByReferer(String referer, Date from, Date to) {
-        AccessLogExample example = accessLogExample("", "", referer, from, to);
-        return (int) accessLogMapper.countByExample(example);
-    }
-
-    private AccessLogExample accessLogExample(String ip, String userAgent, String referer, Date from, Date to) {
+    public Integer countByIP(String ip, AccessLogStatus status, Date from, Date to) {
         AccessLogExample example = new AccessLogExample();
+        example = accessLogExample(example, ip, "", "", status, from, to);
+        return (int) accessLogMapper.countByExample(example);
+    }
+
+    public Integer countByUserAgent(String userAgent, AccessLogStatus status, Date from, Date to) {
+        AccessLogExample example = new AccessLogExample();
+        example = accessLogExample(example, "", userAgent, "", status, from, to);
+        return (int) accessLogMapper.countByExample(example);
+    }
+
+    public Integer countByReferer(String referer, AccessLogStatus status, Date from, Date to) {
+        AccessLogExample example = new AccessLogExample();
+        example = accessLogExample(example, "", "", referer, status, from, to);
+        return (int) accessLogMapper.countByExample(example);
+    }
+
+    private AccessLogExample accessLogExample(AccessLogExample example, String ip, String userAgent, String referer, AccessLogStatus status, Date from, Date to) {
         AccessLogExample.Criteria criteria = example.createCriteria();
         if (ip.length() > 0) {
             criteria.andIpEqualTo(ip);
@@ -59,6 +65,9 @@ public class AccessLogService {
         }
         if (referer.length() > 0) {
             criteria.andRefererEqualTo(referer);
+        }
+        if (status != null) {
+            criteria.andStatusEqualTo(status.getValue());
         }
         if (from != null && to != null) {
             criteria.andCreatetimeBetween(from, to);
