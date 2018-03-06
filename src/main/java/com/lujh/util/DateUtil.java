@@ -364,8 +364,21 @@ public class DateUtil {
         return Math.round((date2.getTime() - date1.getTime()) * 1.0 / (1000 * 3600 * 24));
     }
 
+    /**
+     * 时间分段
+     * @param hour
+     * @return
+     */
+    public static List<Date> dateList(Integer hour) {
+        List<Date> dateList = new ArrayList<>();
+        for (int i = hour; i >= 0; i--) {
+            dateList.add(new Date(System.currentTimeMillis() - i * 60 * 60 * 1000));
+        }
+        return dateList;
+    }
+
     public static void main(String[] args) {
         //System.out.println(getDateDiff(parse("2017-01-01 00:00:00"), parse("2017-01-30 23:59:59")));
-        System.out.println(getTimeStr(getYearFirst(new Date()), DATE_FORMAT_PATTERN_UTC));
+        System.out.println(dateList(1));
     }
 }
