@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lujianhao on 2018/3/1.
  */
 @Service
 public class AccessLogService {
-
     @Autowired
     private AccessLogMapper accessLogMapper;
 
@@ -75,5 +75,27 @@ public class AccessLogService {
         return example;
     }
 
+    public List<String> listByIP(Date from, Date to) {
+        AccessLogExample example = new AccessLogExample();
+        AccessLogExample.Criteria criteria = example.createCriteria();
+        criteria.andCreatetimeGreaterThan(from);
+        criteria.andCreatetimeLessThanOrEqualTo(to);
+        return accessLogMapper.groupByIP(example);
+    }
 
+    public List<String> listByUserAgent(Date from, Date to) {
+        AccessLogExample example = new AccessLogExample();
+        AccessLogExample.Criteria criteria = example.createCriteria();
+        criteria.andCreatetimeGreaterThan(from);
+        criteria.andCreatetimeLessThanOrEqualTo(to);
+        return accessLogMapper.groupByUserAgent(example);
+    }
+
+    public List<String> listByReferer(Date from, Date to) {
+        AccessLogExample example = new AccessLogExample();
+        AccessLogExample.Criteria criteria = example.createCriteria();
+        criteria.andCreatetimeGreaterThan(from);
+        criteria.andCreatetimeLessThanOrEqualTo(to);
+        return accessLogMapper.groupByReferer(example);
+    }
 }

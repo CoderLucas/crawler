@@ -4,11 +4,36 @@ import com.lujh.bean.AccessLog;
 import com.lujh.bean.AccessLogExample.Criteria;
 import com.lujh.bean.AccessLogExample.Criterion;
 import com.lujh.bean.AccessLogExample;
+
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.jdbc.SQL;
 
 public class AccessLogSqlProvider {
+    public String groupByIP(AccessLogExample example) {
+        SQL sql = new SQL();
+        sql.SELECT("ip").FROM("access_log");
+        applyWhere(sql, example, false);
+        sql.GROUP_BY("ip");
+        return sql.toString();
+    }
+
+    public String groupByUserAgent(AccessLogExample example) {
+        SQL sql = new SQL();
+        sql.SELECT("userAgent").FROM("access_log");
+        applyWhere(sql, example, false);
+        sql.GROUP_BY("userAgent");
+        return sql.toString();
+    }
+
+    public String groupByReferer(AccessLogExample example) {
+        SQL sql = new SQL();
+        sql.SELECT("referer").FROM("access_log");
+        applyWhere(sql, example, false);
+        sql.GROUP_BY("referer");
+        return sql.toString();
+    }
 
     public String countByExample(AccessLogExample example) {
         SQL sql = new SQL();
@@ -27,31 +52,31 @@ public class AccessLogSqlProvider {
     public String insertSelective(AccessLog record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("access_log");
-        
+
         if (record.getId() != null) {
             sql.VALUES("id", "#{id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getIp() != null) {
             sql.VALUES("ip", "#{ip,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUseragent() != null) {
             sql.VALUES("userAgent", "#{useragent,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             sql.VALUES("status", "#{status,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreatetime() != null) {
             sql.VALUES("createTime", "#{createtime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getReferer() != null) {
             sql.VALUES("referer", "#{referer,jdbcType=VARCHAR}");
         }
-        
+
         return sql.toString();
     }
 
@@ -69,45 +94,45 @@ public class AccessLogSqlProvider {
         sql.SELECT("referer");
         sql.FROM("access_log");
         applyWhere(sql, example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
+
         return sql.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         AccessLog record = (AccessLog) parameter.get("record");
         AccessLogExample example = (AccessLogExample) parameter.get("example");
-        
+
         SQL sql = new SQL();
         sql.UPDATE("access_log");
-        
+
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getIp() != null) {
             sql.SET("ip = #{record.ip,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUseragent() != null) {
             sql.SET("userAgent = #{record.useragent,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             sql.SET("status = #{record.status,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreatetime() != null) {
             sql.SET("createTime = #{record.createtime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getReferer() != null) {
             sql.SET("referer = #{record.referer,jdbcType=VARCHAR}");
         }
-        
+
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -115,14 +140,14 @@ public class AccessLogSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("access_log");
-        
+
         sql.SET("id = #{record.id,jdbcType=INTEGER}");
         sql.SET("ip = #{record.ip,jdbcType=VARCHAR}");
         sql.SET("userAgent = #{record.useragent,jdbcType=VARCHAR}");
         sql.SET("status = #{record.status,jdbcType=INTEGER}");
         sql.SET("createTime = #{record.createtime,jdbcType=TIMESTAMP}");
         sql.SET("referer = #{record.referer,jdbcType=VARCHAR}");
-        
+
         AccessLogExample example = (AccessLogExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -131,29 +156,29 @@ public class AccessLogSqlProvider {
     public String updateByPrimaryKeySelective(AccessLog record) {
         SQL sql = new SQL();
         sql.UPDATE("access_log");
-        
+
         if (record.getIp() != null) {
             sql.SET("ip = #{ip,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUseragent() != null) {
             sql.SET("userAgent = #{useragent,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             sql.SET("status = #{status,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreatetime() != null) {
             sql.SET("createTime = #{createtime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getReferer() != null) {
             sql.SET("referer = #{referer,jdbcType=VARCHAR}");
         }
-        
+
         sql.WHERE("id = #{id,jdbcType=INTEGER}");
-        
+
         return sql.toString();
     }
 
@@ -161,7 +186,7 @@ public class AccessLogSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -183,7 +208,7 @@ public class AccessLogSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -195,7 +220,7 @@ public class AccessLogSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -206,14 +231,14 @@ public class AccessLogSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -244,7 +269,7 @@ public class AccessLogSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }
