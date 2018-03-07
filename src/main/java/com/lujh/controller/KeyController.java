@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lujh.bean.Key;
 import com.lujh.service.KeyService;
+import com.lujh.util.ListUtil;
 import com.lujh.util.Msg;
+import com.lujh.util.enums.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,42 @@ public class KeyController {
 
     @Autowired
     private KeyService keyService;
+
+    @PostMapping(value = "/ipwhitelist/add")
+    public Msg ipWhiteListAdd(@RequestParam(value = "ip") String ip) {
+        try {
+            List<String> ipWhiteList = keyService.getValueByKey(KeyValue.ip_whitelist.getValue());
+            if (!ipWhiteList.contains(ip)) {
+                ipWhiteList.add(ip);
+                String ipString = ListUtil.fromList(ipWhiteList);
+                Key key = keyService.getByKey(KeyValue.ip_whitelist.getValue());
+                key.setValue(ipString);
+                keyService.update(key);
+            }
+            return Msg.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @DeleteMapping(value = "/ipwhitelist/delete")
+    public Msg ipWhiteListDelete(@RequestParam(value = "ip") String ip) {
+        try {
+            List<String> ipWhiteList = keyService.getValueByKey(KeyValue.ip_whitelist.getValue());
+            if (ipWhiteList.contains(ip)) {
+                ipWhiteList.remove(ip);
+                String ipString = ListUtil.fromList(ipWhiteList);
+                Key key = keyService.getByKey(KeyValue.ip_whitelist.getValue());
+                key.setValue(ipString);
+                keyService.update(key);
+            }
+            return Msg.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
 
     @PostMapping
     public Msg add(@Valid Key key) {

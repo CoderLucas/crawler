@@ -2,6 +2,8 @@ package com.lujh.bean;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
+
 /**
  * Created by lujianhao on 2018/3/5.
  */
@@ -17,6 +19,10 @@ public class AccessLogListOut {
     private Integer successNumber;
 
     private Integer failNumber;
+
+    private String fromTime;
+
+    private String toTime;
 
     public String getIp() {
         return ip;
@@ -56,5 +62,21 @@ public class AccessLogListOut {
 
     public void setFailNumber(Integer failNumber) {
         this.failNumber = failNumber;
+    }
+
+    public String getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(String fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public String getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(String toTime) {
+        this.toTime = toTime;
     }
 }

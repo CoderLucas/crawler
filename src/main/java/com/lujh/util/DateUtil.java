@@ -1,6 +1,7 @@
 package com.lujh.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -24,7 +25,7 @@ public class DateUtil {
     public static final String DATE_FORMAT_PATTERN_MONTH_INT = "yyyyMM";
     public static final String DATE_FORMAT_PATTERN_HOUR_INT = "yyyyMMddHH";
     public static final String DATE_FORMAT_PATTERN_MINUTE_INT = "yyyyMMddHHmm";
-    public static final String DATE_FORMAT_PATTERN_HTTP = "EEE, dd MMM yyyyy HH:mm:ss z";
+    public static final String DATE_FORMAT_PATTERN_HTTP = "EEE, dd MMM yyyy HH:mm:ss z";
 
     public static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
@@ -364,21 +365,35 @@ public class DateUtil {
         return Math.round((date2.getTime() - date1.getTime()) * 1.0 / (1000 * 3600 * 24));
     }
 
+
     /**
      * 时间分段
+     *
      * @param hour
      * @return
      */
     public static List<Date> dateList(Integer hour) {
-        List<Date> dateList = new ArrayList<>();
+        Date date = getEndHour(new Date());
+        List<Date> dateList = new LinkedList<>();
         for (int i = hour; i >= 0; i--) {
-            dateList.add(new Date(System.currentTimeMillis() - i * 60 * 60 * 1000));
+            dateList.add(new Date(date.getTime() - i * 60 * 60 * 1000));
         }
         return dateList;
     }
 
+    private static Date getEndHour(Date date) {
+        Calendar todayEnd = Calendar.getInstance();
+        todayEnd.setTime(date);
+        todayEnd.add(Calendar.HOUR, 1);
+        todayEnd.set(Calendar.MINUTE, 0);
+        todayEnd.set(Calendar.SECOND, 0);
+        todayEnd.set(Calendar.MILLISECOND, 0);
+        return todayEnd.getTime();
+    }
+
     public static void main(String[] args) {
         //System.out.println(getDateDiff(parse("2017-01-01 00:00:00"), parse("2017-01-30 23:59:59")));
-        System.out.println(dateList(1));
+        //System.out.println(dateList(12).size());
+        System.out.println(DateFormatUtils.format(DateUtil.getEndHour(new Date()), DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
     }
 }

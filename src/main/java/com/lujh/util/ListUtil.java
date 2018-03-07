@@ -1,5 +1,7 @@
 package com.lujh.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +25,22 @@ public class ListUtil {
         return strList;
     }
 
+    /**
+     *
+     * @param list
+     * @return
+     */
+    public static String fromList(List<String> list){
+        return StringUtils.join(list.toArray(),",");
+    }
+
     public static void main(String[] args) {
-        System.out.print(fromString("100"));
-        System.out.print(System.currentTimeMillis());
+
+        List<String> list = new ArrayList<String>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        System.out.println(fromList(list));
 
     }
 }

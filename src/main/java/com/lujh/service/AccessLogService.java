@@ -37,6 +37,12 @@ public class AccessLogService {
         return accessLogMapper.selectByPrimaryKey(id);
     }
 
+    public Integer count(AccessLogStatus status, Date from, Date to) {
+        AccessLogExample example = new AccessLogExample();
+        example = accessLogExample(example, "", "", "", status, from, to);
+        return (int) accessLogMapper.countByExample(example);
+    }
+
     public Integer countByIP(String ip, AccessLogStatus status, Date from, Date to) {
         AccessLogExample example = new AccessLogExample();
         example = accessLogExample(example, ip, "", "", status, from, to);
