@@ -36,11 +36,9 @@ public class ListUtil {
 
     public static void main(String[] args) {
 
-        List<String> list = new ArrayList<String>();
-        list.add("a");
-        list.add("b");
-        list.add("c");
-        System.out.println(fromList(list));
-
+        String string = "ABCD";
+        if (string.toLowerCase().contains("a")){
+            System.out.println("12");
+        }
     }
 }

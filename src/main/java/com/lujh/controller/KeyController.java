@@ -41,7 +41,7 @@ public class KeyController {
         }
     }
 
-    @DeleteMapping(value = "/ipwhitelist/delete")
+    @PostMapping(value = "/ipwhitelist/delete")
     public Msg ipWhiteListDelete(@RequestParam(value = "ip") String ip) {
         try {
             List<String> ipWhiteList = keyService.getValueByKey(KeyValue.ip_whitelist.getValue());
@@ -52,6 +52,96 @@ public class KeyController {
                 key.setValue(ipString);
                 keyService.update(key);
             }
+            return Msg.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @PostMapping(value = "/ipblacklist/add")
+    public Msg ipBlackListAdd(@RequestParam(value = "ip") String ip) {
+        try {
+            List<String> ipBlackList = keyService.getValueByKey(KeyValue.ip_blacklist.getValue());
+            if (!ipBlackList.contains(ip)) {
+                ipBlackList.add(ip);
+                String ipString = ListUtil.fromList(ipBlackList);
+                Key key = keyService.getByKey(KeyValue.ip_blacklist.getValue());
+                key.setValue(ipString);
+                keyService.update(key);
+            }
+            return Msg.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @PostMapping(value = "/ipblacklist/delete")
+    public Msg ipBlackListDelete(@RequestParam(value = "ip") String ip) {
+        try {
+            List<String> ipBlackList = keyService.getValueByKey(KeyValue.ip_blacklist.getValue());
+            if (ipBlackList.contains(ip)) {
+                ipBlackList.remove(ip);
+                String ipString = ListUtil.fromList(ipBlackList);
+                Key key = keyService.getByKey(KeyValue.ip_blacklist.getValue());
+                key.setValue(ipString);
+                keyService.update(key);
+            }
+            return Msg.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @GetMapping(value = "/ip/status")
+    public Msg ipStatus() {
+        try {
+            Key key = keyService.getByKey("ip_status");
+            if ("1".equals(key.getValue())) {
+                key.setValue("0");
+            } else {
+                key.setValue("1");
+            }
+            keyService.update(key);
+            return Msg.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @PostMapping(value = "/referer/update")
+    public Msg referer(@RequestParam(value = "referer") String referer) {
+        try {
+            Key key = keyService.getByKey(KeyValue.referer_limit.getValue());
+            if (key == null) {
+                Key newKey = new Key();
+                newKey.setKeystr(KeyValue.referer_limit.getValue());
+                newKey.setValue(referer);
+                keyService.add(newKey);
+                return Msg.success().add("key", newKey);
+            }
+            key.setValue(referer);
+            keyService.update(key);
+            return Msg.success().add("key", key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @GetMapping(value = "/referer/status")
+    public Msg refererStatus() {
+        try {
+            Key key = keyService.getByKey("referer_status");
+            if ("1".equals(key.getValue())) {
+                key.setValue("0");
+            } else {
+                key.setValue("1");
+            }
+            keyService.update(key);
             return Msg.success();
         } catch (Exception e) {
             e.printStackTrace();

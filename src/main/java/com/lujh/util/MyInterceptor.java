@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lujianhao on 2018/2/9.
@@ -34,21 +35,45 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String ip = getIpAddr(request);
+        String referer = request.getHeader("Referer");
+        String userAgent = request.getHeader("User-Agent");
         AccessLog accessLog = new AccessLog();
         accessLog.setIp(ip);
-        accessLog.setReferer(request.getHeader("Referer"));
-        accessLog.setUseragent(request.getHeader("User-Agent"));
+        accessLog.setReferer(referer);
+        accessLog.setUseragent(userAgent);
         accessLog.setCreatetime(new Date());
 
-        // IP次数验证
-        int ipLimit = Integer.valueOf(keyService.getValueByKey("ip_limit").get(0));
-        int ipAccess = accessLogService.countByIP(ip,AccessLogStatus.SUCCESS, new Date(System.currentTimeMillis() - 10 * 60 * 1000), new Date());
-        if (ipAccess >= ipLimit) {
-            accessLog.setStatus(AccessLogStatus.FAIL.getValue());
-            accessLogService.add(accessLog);
-            return false;
-        }
+        // IP白名单验证
 
+
+        // IP次数验证
+        String ipStatus = keyService.getValueByKey("ip_status").get(0);
+        if ("1".equals(ipStatus)) {
+            int ipLimit = Integer.valueOf(keyService.getValueByKey("ip_limit").get(0));
+            int ipAccess = accessLogService.countByIP(ip, AccessLogStatus.SUCCESS, new Date(System.currentTimeMillis() - 10 * 60 * 1000), new Date());
+            if (ipAccess >= ipLimit) {
+                accessLog.setStatus(AccessLogStatus.FAIL.getValue());
+                accessLogService.add(accessLog);
+                return false;
+            }
+        }
+        // referer验证
+        Wrapper wrapper = new Wrapper(true);
+        String refererStatus = keyService.getValueByKey("referer_status").get(0);
+        if ("1".equals(refererStatus)) {
+            List<String> refererList = keyService.getValueByKey("referer_limit");
+            refererList.forEach(string -> {
+                if (referer.toLowerCase().contains(string)){
+                    wrapper.set(false);
+                    return;
+                }
+            });
+            if (!(boolean)wrapper.get()){
+                accessLog.setStatus(AccessLogStatus.FAIL.getValue());
+                accessLogService.add(accessLog);
+                return false;
+            }
+        }
         accessLog.setStatus(AccessLogStatus.SUCCESS.getValue());
         accessLogService.add(accessLog);
         return true;
