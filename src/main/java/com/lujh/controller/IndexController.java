@@ -24,4 +24,9 @@ public class IndexController {
         return "/about";
     }
 
+    @GetMapping("/catalog")
+    public String catalog() {
+        return "/catalog";
+    }
+
 }
