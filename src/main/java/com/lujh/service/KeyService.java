@@ -4,12 +4,9 @@ import com.lujh.bean.Key;
 import com.lujh.bean.KeyExample;
 import com.lujh.dao.KeyMapper;
 import com.lujh.util.ListUtil;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
