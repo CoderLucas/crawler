@@ -2,6 +2,7 @@ package com.lujh.controller;
 
 import com.lujh.bean.AccessLogListOut;
 import com.lujh.service.AccessLogService;
+import com.lujh.service.KeyService;
 import com.lujh.util.DateUtil;
 import com.lujh.util.Msg;
 import com.lujh.util.enums.AccessLogStatus;
@@ -12,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by lujianhao on 2018/3/4.
@@ -24,6 +23,8 @@ import java.util.List;
 public class AccessLogController {
     @Autowired
     private AccessLogService accessLogService;
+    @Autowired
+    private KeyService keyService;
 
     /**
      * 获取当日的所有IP访问记录
@@ -31,20 +32,23 @@ public class AccessLogController {
      * @return
      */
     @GetMapping(value = "/ip/list")
-    public Msg ipList() {
+    public Msg ipList(@RequestParam(value = "from") long from,
+                      @RequestParam(value = "to") long to) {
         try {
-            List<String> ipList = accessLogService.listByIP(DateUtil.getStartTime(new Date()), new Date());
+            Date fromDate = new Date(from);
+            Date toDate = new Date(to);
+            List<String> ipList = accessLogService.listByIP(DateUtil.getStartTime(fromDate), toDate);
             List<AccessLogListOut> accessLogListOutList = new LinkedList<>();
             ipList.forEach(ip -> {
                 AccessLogListOut accessLogListOut = new AccessLogListOut();
                 accessLogListOut.setIp(ip);
-                accessLogListOut.setSuccessNumber(accessLogService.countByIP(ip, AccessLogStatus.SUCCESS, DateUtil.getStartTime(new Date()), new Date()));
-                accessLogListOut.setFailNumber(accessLogService.countByIP(ip, AccessLogStatus.FAIL, DateUtil.getStartTime(new Date()), new Date()));
-                accessLogListOut.setFromTime(DateFormatUtils.format(DateUtil.getStartTime(new Date()), DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
-                accessLogListOut.setToTime(DateFormatUtils.format(new Date(), DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
+                accessLogListOut.setSuccessNumber(accessLogService.countByIP(ip, AccessLogStatus.SUCCESS, DateUtil.getStartTime(fromDate), toDate));
+                accessLogListOut.setFailNumber(accessLogService.countByIP(ip, AccessLogStatus.FAIL, DateUtil.getStartTime(fromDate), toDate));
+                accessLogListOut.setFromTime(DateFormatUtils.format(DateUtil.getStartTime(fromDate), DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
+                accessLogListOut.setToTime(DateFormatUtils.format(toDate, DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
                 accessLogListOutList.add(accessLogListOut);
             });
-            int total = accessLogService.count(null, DateUtil.getStartTime(new Date()), new Date());
+            int total = accessLogService.count(null, DateUtil.getStartTime(fromDate), toDate);
             return Msg.success().add("ip_list", accessLogListOutList).add("total", total);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,6 +79,44 @@ public class AccessLogController {
                 accessLogListOutList.add(accessLogListOut);
             }
             return Msg.success().add("list", accessLogListOutList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @GetMapping(value = "/referer")
+    public Msg refererList(@RequestParam(value = "from") long from,
+                           @RequestParam(value = "to") long to) {
+        try {
+            Date fromDate = new Date(from);
+            Date toDate = new Date(to);
+            List<String> refererList = accessLogService.listByReferer(fromDate, toDate);
+            Map<String, Integer> referMap = new HashMap<>();
+            refererList.forEach(referer -> {
+                int count = accessLogService.countByReferer(referer,null, DateUtil.getStartTime(fromDate), toDate);
+                referMap.put(referer, count);
+            });
+            return Msg.success().add("refererMap",referMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Msg.fail();
+        }
+    }
+
+    @GetMapping(value = "useragent")
+    public Msg useragent(@RequestParam(value = "from") long from,
+                         @RequestParam(value = "to") long to){
+        try {
+            Date fromDate = new Date(from);
+            Date toDate = new Date(to);
+            List<String> useragentList = accessLogService.listByUserAgent(fromDate,toDate);
+            Map<String, Integer> useragentMap = new HashMap<>();
+            useragentList.forEach(useragent -> {
+                int count = accessLogService.countByUserAgent(useragent,null, DateUtil.getStartTime(fromDate), toDate);
+                useragentMap.put(useragent, count);
+            });
+            return Msg.success().add("useragentMap",useragentMap);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
