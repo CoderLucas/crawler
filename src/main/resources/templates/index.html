@@ -483,6 +483,10 @@
                 var list = result.data.goods.list;
                 $.each(list,function(index,item){
                     var div = $("<div></div>").addClass("grid_3 product");
+                    var sale = $("<img/>").addClass("sale").attr("src","https://img-ads.csdn.net/2018/201803151802373041.jpg")
+                            .attr("alt","Sale");
+                    var prev = $("<div></div>").addClass("prev")
+                            .append("<a></a>").attr("href","#")
                 })
             }
         });
