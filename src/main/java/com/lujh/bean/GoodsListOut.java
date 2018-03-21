@@ -13,6 +13,8 @@ public class GoodsListOut {
 
     private Integer discountprice;
 
+    private Integer price;
+
     private String image;
 
     public GoodsListOut() {
@@ -23,6 +25,7 @@ public class GoodsListOut {
         this.name = goods.getName();
         this.discountprice = goods.getDiscountprice();
         this.image = goods.getImage();
+        this.price = goods.getDiscountprice() + 20;
     }
 
     public String getEid() {
@@ -55,5 +58,13 @@ public class GoodsListOut {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }
