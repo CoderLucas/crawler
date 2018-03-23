@@ -9,7 +9,7 @@ public class Goods {
 
     private Integer discountprice;
 
-    private Byte type;
+    private Byte type;    // 1热销 2主打 3特价 4服装 5电器 6食品 7书籍
 
     private String introduction;
 
