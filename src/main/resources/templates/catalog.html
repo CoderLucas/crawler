@@ -138,7 +138,7 @@
 <div class="container_12">
     <div class="grid_12">
         <div class="breadcrumbs">
-            <a href="index.html">Home</a><span>&#8250;</span><a href="#">Category</a><span>&#8250;</span><span class="current">This page</span>
+            <a href="index.html">首页</a><span>&#8250;</span><a href="#">搜索</a><span>&#8250;</span><span class="current">结果</span>
         </div><!-- .breadcrumbs -->
     </div><!-- .grid_12 -->
 </div><!-- .container_12 -->
@@ -151,7 +151,7 @@
             <aside id="specials" class="specials">
                 <h3>特价</h3>
 
-                <ul>
+                <ul id="specials_list">
                     <li>
                         <div class="prev">
                             <a href="product_page.html"><img src="images/special1.png" alt="" title="" /></a>
@@ -179,18 +179,7 @@
             <aside id="hot" class="specials">
                 <h3>热销</h3>
 
-                <ul>
-                    <li>
-                        <div class="prev">
-                            <a href="product_page.html"><img src="images/special1.png" alt="" title="" /></a>
-                        </div>
-
-                        <div class="cont">
-                            <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                            <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                        </div>
-                    </li>
-
+                <ul id="hot_list">
                     <li>
                         <div class="prev">
                             <a href="product_page.html"><img src="images/special2.png" alt="" title="" /></a>
@@ -303,7 +292,64 @@
         </div><!-- .container_12 -->
     </div><!-- .f_navigation -->
 </footer>
+<script type="text/javascript">
 
+    $(function(){
+        get_specials_product();
+        get_hot_product();
+    });
+
+    function get_specials_product() {
+        $.ajax({
+            url:"/goods/list?type=3",
+            type:"GET",
+            success:function(result){
+                console.log(result);
+                $("#specials_list li").remove();
+                var list = result.data.goods.list;
+                $.each(list,function(index,item){
+                    var image = $("<img/>").attr("src",item.image);
+                    var href_img = $("<a></a>").attr("href","#").append(image);
+                    var prev = $("<div></div>").addClass("prev").append(href_img);
+
+                    var href_str = $("<a></a>").attr("href","#").append(item.name);
+                    var old_price = $("<span></span>").addClass("old").append(item.price+".00");
+                    var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice+".00");
+                    var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
+                    $("<li></li>").append(prev).append(cont).appendTo("#specials_list");
+                })
+            }
+        });
+    }
+
+    function get_hot_product() {
+        $.ajax({
+            url:"/goods/list?type=1",
+            type:"GET",
+            success:function(result){
+                console.log(result);
+                $("#hot_list li").remove();
+                var list = result.data.goods.list;
+                $.each(list,function(index,item){
+                    var image = $("<img/>").attr("src",item.image);
+                    var href_img = $("<a></a>").attr("href","#").append(image);
+                    var prev = $("<div></div>").addClass("prev").append(href_img);
+
+                    var href_str = $("<a></a>").attr("href","#").append(item.name);
+                    var old_price = $("<span></span>").addClass("old").append(item.price+".00");
+                    var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice+".00");
+                    var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
+                    $("<li></li>").append(prev).append(cont).appendTo("#hot_list");
+                })
+            }
+        });
+    }
+
+    //弹出新增用户按钮
+    $("#submit").click(function(){
+        alert("感谢您的反馈！");
+    });
+</script>
 </body>
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 </html>
