@@ -314,7 +314,7 @@
 
                     var href_str = $("<a></a>").attr("href","#").append(item.name);
                     var old_price = $("<span></span>").addClass("old").append(item.price+".00");
-                    var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice+".00");
+                    var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice+".00 元");
                     var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
                     $("<li></li>").append(prev).append(cont).appendTo("#specials_list");
                 })
@@ -337,7 +337,7 @@
 
                     var href_str = $("<a></a>").attr("href","#").append(item.name);
                     var old_price = $("<span></span>").addClass("old").append(item.price+".00");
-                    var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice+".00");
+                    var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice+".00 元");
                     var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
                     $("<li></li>").append(prev).append(cont).appendTo("#hot_list");
                 })
