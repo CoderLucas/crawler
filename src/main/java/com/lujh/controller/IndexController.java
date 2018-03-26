@@ -29,4 +29,9 @@ public class IndexController {
         return "/catalog";
     }
 
+    @GetMapping("/product_page")
+    public String product_page(){
+        return "/product_page";
+    }
+
 }
