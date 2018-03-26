@@ -86,8 +86,8 @@
         </div><!-- .grid_3 -->
 
         <div class="grid_4">
-            <form class="search">
-                <input type="text" name="search" class="entry_form" value="" placeholder="在商店内搜索..."/>
+            <form class="search" id="search">
+                <input type="text" name="name" class="entry_form" value="" placeholder="在商店内搜索..." id="input_search"/>
             </form>
         </div><!-- .grid_3 -->
 
@@ -229,51 +229,11 @@
                 </div><!-- .grid_3 -->
 
                 <div class="clear"></div>
-
-                <div class="grid_3 product">
-                    <div class="prev">
-                        <a href="product_page.html"><img src="images/product_1.png" alt="" title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="clear"></div>
-
-                <div class="grid_3 product">
-                    <div class="prev">
-                        <a href="product_page.html"><img src="images/product_1.png" alt="" title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="clear"></div>
             </div><!-- .grid_product -->
 
             <div class="clear"></div>
 
-            <div class="pagination">
+            <div class="pagination" id="page_nav_area">
                 <ul>
                     <li class="prev"><span>&#8592;</span></li>
                     <li class="curent"><a href="#">1</a></li>
@@ -286,7 +246,6 @@
                     <li class="next"><a href="#">&#8594;</a></li>
                 </ul>
             </div><!-- .pagination -->
-            <p class="pagination_info">展示</p>
         </div><!-- #content -->
 
         <div class="clear"></div>
@@ -336,26 +295,32 @@
 </footer>
 <script type="text/javascript">
 
-    $(function () {
-        alert();
+    var name = GetQueryString("name");
 
+    $(function () {
+        get_product(1);
         get_specials_product();
         get_hot_product();
     });
 
-    function get_product() {
-        var name = window.location.href.split("=")[1];
+    function get_product(pn) {
+
+
+        var form = $("<form></form>");
+        var input_name = $("<input/>").attr('value', name).attr("name", "name");
+        var input_pn = $("<input/>").attr('value', pn).attr("name", "pn");
+        form.append(input_name);
+        form.append(input_pn);
+
         $.ajax({
-            url: "/goods/list?name" + name,
+            url: "/goods/list?" + form.serialize(),
             type: "GET",
-            data: $("#div_search form").serialize(),
             success: function (result) {
                 console.log(result);
-                $("#list_product2 li").remove();
+                $("#grid_product div").remove();
+                build_page_nav(result);
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
-                    var sale = $("<img/>").addClass("sale").attr("src", "images/sale.png")
-                            .attr("alt", "Sale");
                     var image = $("<img/>").attr("src", item.image);
                     var a = $("<a></a>").attr("href", "#").append(image);
                     var prev = $("<div></div>").addClass("prev").append(a);
@@ -365,20 +330,19 @@
                     var price_new_cart = $("<div></div>").addClass("price_new").append(item.discountprice + ".00 元");
                     var price_old_cart = $("<div></div>").addClass("price_old").append(item.price + ".00");
                     var vert_cart = $("<div></div>").addClass("vert")
-                            .append(price_new_cart).append(price_old_cart);
+                        .append(price_new_cart).append(price_old_cart);
                     var price_cart = $("<div></div>").addClass("price")
-                            .append(vert_cart);
+                        .append(vert_cart);
                     var obn = $("<a></a>").addClass("obn").attr("href", "#");
                     var like = $("<a></a>").addClass("like").attr("href", "#");
                     var bay = $("<a></a>").addClass("bay").attr("href", "#");
-
                     var cart = $("<div></div>").addClass("cart")
-                            .append(price_cart).append(obn).append(like).append(bay);
+                        .append(price_cart).append(obn).append(like).append(bay);
 
-                    var product_div = $("<div></div>").addClass("grid_3 product")
-                            .append(sale).append(prev).append(h3).append(cart);
-                    $("<li></li>").append(product_div).appendTo("#list_product2");
+                    var product = $("<div></div>").addClass("grid_3 product")
+                        .append(prev).append(h3).append(cart).appendTo("#grid_product");
                 })
+
             }
         });
     }
@@ -429,10 +393,45 @@
         });
     }
 
+    //解析显示分页条
+    function build_page_nav(result) {
+        //清空表格数据
+        $("#page_nav_area").empty();
+        var ul = $("<ul></ul>");
+
+        $.each(result.data.goods.navigatepageNums, function (index, item) {
+            var numLi = $("<li></li>").append($("<a></a>").append(item));
+            //判断当前页码，分页条显示高亮
+            if (result.data.goods.pageNum == item) {
+                numLi.addClass("curent");
+            }
+            numLi.click(function () {
+                get_product(item);
+            });
+            ul.append(numLi);
+        });
+
+        ul.appendTo("#page_nav_area");
+    }
+
     //弹出新增用户按钮
     $("#submit").click(function () {
         alert("感谢您的反馈！");
     });
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&amp;)" + name + "=([^&amp;]*)(&amp;|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return "";
+    }
+
+    $("form").submit(function () {
+        var index = document.getElementById("input_search").value;
+        var url = "catalog.html?name=" + index;
+        self.location.href(url);
+    });
+
 </script>
 </body>
 <!-- Added by HTTrack -->

@@ -380,24 +380,20 @@
     }
 
 
-    $("form").submit(function (e) {
-        if (document.getElementById("input_search").value == "") {
-            alert("名称不可为空");
-        } else {
-            var blocked = false;
-            try {
-                var index = document.getElementById("input_search").value;
-                var url = "catalog.html?name=" + index;
-                var newWin = window.open(url);
-                if (newWin == null) {
-                    blocked = true;
-                }
-            } catch (ex) {
-                block = true;
+    $("form").submit(function () {
+        var blocked = false;
+        try {
+            var index = document.getElementById("input_search").value;
+            var url = "catalog.html?name=" + index;
+            var newWin = window.open(url);
+            if (newWin == null) {
+                blocked = true;
             }
-            if (blocked) {
-                alert("弹出窗口被阻止");
-            }
+        } catch (ex) {
+            block = true;
+        }
+        if (blocked) {
+            alert("弹出窗口被阻止");
         }
     });
 

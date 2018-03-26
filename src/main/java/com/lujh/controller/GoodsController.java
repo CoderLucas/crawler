@@ -74,13 +74,14 @@ public class GoodsController {
     public Msg list(@RequestParam(value = "name", defaultValue = "", required = false) String name,
                     @RequestParam(value = "type", defaultValue = "-1",required = false) Integer type,
                     @RequestParam(value = "pn", defaultValue = "1", required = false) Integer pn,
-                    @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
+                    @RequestParam(value = "size", defaultValue = "3", required = false) Integer size) {
         try {
             PageHelper.startPage(pn, size);
             List<Goods> goodsList = goodsService.getAll(name, type);
             List<GoodsListOut> goodsListOutList = new ArrayList<>();
             goodsList.forEach(goods -> goodsListOutList.add(new GoodsListOut(goods)));
-            PageInfo pageInfo = new PageInfo(goodsListOutList, 5);
+            PageInfo pageInfo = new PageInfo(goodsList, 5);
+            pageInfo.setList(goodsListOutList);
             return Msg.success().add("goods", pageInfo);
         } catch (Exception e) {
             e.printStackTrace();

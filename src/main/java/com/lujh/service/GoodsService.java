@@ -37,8 +37,8 @@ public class GoodsService {
     public List<Goods> getAll(String name, Integer type) {
         GoodsExample example = new GoodsExample();
         GoodsExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNoneBlank()) {
-            criteria.andNameLike(name);
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike("%" + name + "%");
         }
         if (type > 0) {
             criteria.andTypeEqualTo((byte) type.intValue());
