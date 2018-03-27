@@ -103,24 +103,15 @@
             <nav class="primary">
                 <ul>
                     <li class="curent"><a href="index.html">首页</a></li>
-                    <li><a href="catalog_grid.html">服装</a></li>
-                    <li><a href="catalog_grid.html">电器</a></li>
-                    <li><a href="catalog_grid.html">食品</a></li>
-                    <li><a href="catalog_grid.html">书籍</a></li>
+                    <li><a href="catalog.html">列表</a></li>
                     <li>
                         <a href="#">All pages</a>
                         <ul class="sub">
                             <li><a href="index.html">Home</a></li>
                             <li><a href="catalog.html">Catalog (grid view)</a></li>
                             <li><a href="product_page.html">Product view</a></li>
-                            <li><a href="shopping_cart.html">Shoping cart</a></li>
-                            <li><a href="checkout.html">Proceed to checkout</a></li>
-                            <li><a href="compare.html">Products comparison</a></li>
-                            <li><a href="login.html">Login</a></li>
                             <li><a href="about.html">Contact us</a></li>
                             <li><a href="404.html">404</a></li>
-                            <li><a href="blog.html">Blog posts</a></li>
-                            <li><a href="blog_post.html">Blog post view</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -313,7 +304,7 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var sale = $("<img/>").addClass("sale").attr("src", "images/sale.png")
-                            .attr("alt", "Sale");
+                        .attr("alt", "Sale");
                     var image = $("<img/>").attr("src", item.image);
                     var a = $("<a></a>").attr("href", "#").append(image);
                     var prev = $("<div></div>").addClass("prev").append(a);
@@ -323,18 +314,18 @@
                     var price_new_cart = $("<div></div>").addClass("price_new").append(item.discountprice + ".00 元");
                     var price_old_cart = $("<div></div>").addClass("price_old").append(item.price + ".00");
                     var vert_cart = $("<div></div>").addClass("vert")
-                            .append(price_new_cart).append(price_old_cart);
+                        .append(price_new_cart).append(price_old_cart);
                     var price_cart = $("<div></div>").addClass("price")
-                            .append(vert_cart);
+                        .append(vert_cart);
                     var obn = $("<a></a>").addClass("obn").attr("href", "#");
                     var like = $("<a></a>").addClass("like").attr("href", "#");
                     var bay = $("<a></a>").addClass("bay").attr("href", "#");
 
                     var cart = $("<div></div>").addClass("cart")
-                            .append(price_cart).append(obn).append(like).append(bay);
+                        .append(price_cart).append(obn).append(like).append(bay);
 
                     var product_div = $("<div></div>").addClass("grid_3 product")
-                            .append(sale).append(prev).append(h3).append(cart);
+                        .append(sale).append(prev).append(h3).append(cart);
                     $("<li></li>").append(product_div).appendTo("#list_product");
                 })
             }
@@ -351,7 +342,7 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var sale = $("<img/>").addClass("sale").attr("src", "images/sale.png")
-                            .attr("alt", "Sale");
+                        .attr("alt", "Sale");
                     var image = $("<img/>").attr("src", item.image);
                     var a = $("<a></a>").attr("href", "#").append(image);
                     var prev = $("<div></div>").addClass("prev").append(a);
@@ -361,18 +352,18 @@
                     var price_new_cart = $("<div></div>").addClass("price_new").append(item.discountprice + ".00 元");
                     var price_old_cart = $("<div></div>").addClass("price_old").append(item.price + ".00");
                     var vert_cart = $("<div></div>").addClass("vert")
-                            .append(price_new_cart).append(price_old_cart);
+                        .append(price_new_cart).append(price_old_cart);
                     var price_cart = $("<div></div>").addClass("price")
-                            .append(vert_cart);
+                        .append(vert_cart);
                     var obn = $("<a></a>").addClass("obn").attr("href", "#");
                     var like = $("<a></a>").addClass("like").attr("href", "#");
                     var bay = $("<a></a>").addClass("bay").attr("href", "#");
 
                     var cart = $("<div></div>").addClass("cart")
-                            .append(price_cart).append(obn).append(like).append(bay);
+                        .append(price_cart).append(obn).append(like).append(bay);
 
                     var product_div = $("<div></div>").addClass("grid_3 product")
-                            .append(sale).append(prev).append(h3).append(cart);
+                        .append(sale).append(prev).append(h3).append(cart);
                     $("<li></li>").append(product_div).appendTo("#list_product2");
                 })
             }

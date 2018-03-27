@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8"/><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8"/>
+
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+
+    <title>管理后台</title>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link href="css/style.css" media="screen" rel="stylesheet" type="text/css"/>
+    <link href="css/grid.css" media="screen" rel="stylesheet" type="text/css"/>
+
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/html5.js"></script>
+    <script src="js/jflow.plus.js"></script>
+    <script src="js/jquery.carouFredSel-5.2.2-packed.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#myController").jFlow({
+                controller: ".control", // must be class, use . sign
+                slideWrapper: "#jFlowSlider", // must be id, use # sign
+                slides: "#slider",  // the div where all your sliding divs are nested in
+                selectedWrapper: "jFlowSelected",  // just pure text, no sign
+                width: "984px",  // this is the width for the content-slider
+                height: "480px",  // this is the height for the content-slider
+                duration: 400,  // time in miliseconds to transition one slide
+                prev: ".slidprev", // must be class, use . sign
+                next: ".slidnext", // must be class, use . sign
+                auto: true
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('#list_product').carouFredSel({
+                prev: '#prev_c1',
+                next: '#next_c1',
+                auto: false
+            });
+            $('#list_product2').carouFredSel({
+                prev: '#prev_c2',
+                next: '#next_c2',
+                auto: false
+            });
+            $(window).resize();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("button").click(function () {
+                $(this).addClass('click')
+            });
+        })
+    </script>
+
+</head>
+<body>
+<div class="container_12">
+    <div id="top">
+        <div class="grid_10">
+            <div class="welcome">
+                新媒体学院 网络工程 卢健浩
+            </div><!-- .phone_top -->
+        </div><!-- .grid_3 -->
+
+        <div class="grid_2">
+            <div class="welcome">
+                反爬虫系统 管理后台
+            </div><!-- .welcome -->
+        </div><!-- .grid_6 -->
+    </div><!-- #top -->
+</div><!-- .container_12 -->
+
+<div class="clear"></div>
+
+<div id="block_nav_primary">
+    <div class="container_12">
+        <div class="grid_12">
+            <nav class="primary">
+                <ul>
+                    <li class="curent"><a href="#">系统设置</a></li>
+                    <li><a href="#">IP</a></li>
+                    <li><a href="#">User-Agent</a></li>
+                    <li><a href="#">Referer</a></li>
+                </ul>
+            </nav><!-- .primary -->
+        </div><!-- .grid_12 -->
+    </div><!-- .container_12 -->
+</div><!-- .block_nav_primary -->
+
+<div class="clear"></div>
+
+<section id="main">
+
+    <div class="container_12">
+
+            <h3>IP拦截设置</h3>
+            <table>
+                <tr>
+                    <th class="bg" width="40%">IP拦截开启状态</th>
+                    <th width="60%">Second</th>
+                </tr>
+                <tr>
+                    <th class="bg" width="40%">IP拦截次数</th>
+                    <th width="60%">Second</th>
+                </tr>
+                <tr>
+                    <th class="bg" width="40%">IP白名单</th>
+                    <th width="60%">Second</th>
+                </tr>
+                <tr>
+                    <th class="bg" width="40%">IP黑名单</th>
+                    <th width="60%">Second</th>
+                </tr>
+            </table>
+            <div class="clear"></div>
+
+        <h3>User-Agent设置</h3>
+        <table>
+            <tr>
+                <th class="bg" width="40%">开启状态</th>
+                <th width="60%">Second</th>
+            </tr>
+            <tr>
+                <th class="bg" width="40%">浏览器限制</th>
+                <th width="60%">Second</th>
+            </tr>
+        </table>
+        <div class="clear"></div>
+
+        <h3>Referer设置</h3>
+        <table>
+            <tr>
+                <th class="bg" width="40%">开启状态</th>
+                <th width="60%">Second</th>
+            </tr>
+            <tr>
+                <th class="bg" width="40%">来源限制</th>
+                <th width="60%">Second</th>
+            </tr>
+        </table>
+        <div class="clear"></div>
+
+    </div>
+</section>
+
+</body>
+</html>

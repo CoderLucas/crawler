@@ -34,4 +34,8 @@ public class IndexController {
         return "/product_page";
     }
 
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin";
+    }
 }

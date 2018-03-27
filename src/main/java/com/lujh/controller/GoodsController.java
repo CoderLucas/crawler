@@ -74,7 +74,7 @@ public class GoodsController {
     public Msg list(@RequestParam(value = "name", defaultValue = "", required = false) String name,
                     @RequestParam(value = "type", defaultValue = "-1",required = false) Integer type,
                     @RequestParam(value = "pn", defaultValue = "1", required = false) Integer pn,
-                    @RequestParam(value = "size", defaultValue = "3", required = false) Integer size) {
+                    @RequestParam(value = "size", defaultValue = "9", required = false) Integer size) {
         try {
             PageHelper.startPage(pn, size);
             List<Goods> goodsList = goodsService.getAll(name, type);
