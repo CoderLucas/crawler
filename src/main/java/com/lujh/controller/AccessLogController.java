@@ -37,7 +37,7 @@ public class AccessLogController {
         try {
             Date fromDate = new Date(from);
             Date toDate = new Date(to);
-            List<String> ipList = accessLogService.listByIP(DateUtil.getStartTime(fromDate), toDate);
+            List<String> ipList = accessLogService.listByIP(DateUtil.getStartTime(fromDate), DateUtil.getEndTime(toDate));
             List<AccessLogListOut> accessLogListOutList = new LinkedList<>();
             ipList.forEach(ip -> {
                 AccessLogListOut accessLogListOut = new AccessLogListOut();
@@ -48,8 +48,7 @@ public class AccessLogController {
                 accessLogListOut.setToTime(DateFormatUtils.format(toDate, DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
                 accessLogListOutList.add(accessLogListOut);
             });
-            int total = accessLogService.count(null, DateUtil.getStartTime(fromDate), toDate);
-            return Msg.success().add("ip_list", accessLogListOutList).add("total", total);
+            return Msg.success().add("ip_list", accessLogListOutList);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
@@ -104,7 +103,7 @@ public class AccessLogController {
         }
     }
 
-    @GetMapping(value = "useragent")
+    @GetMapping(value = "/useragent")
     public Msg useragent(@RequestParam(value = "from") long from,
                          @RequestParam(value = "to") long to){
         try {

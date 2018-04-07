@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lujianhao on 2018/2/4.
@@ -95,16 +97,38 @@ public class KeyController {
         }
     }
 
-    @GetMapping(value = "/ip/status")
-    public Msg ipStatus() {
+    @PostMapping(value = "/config/set")
+    public Msg configSet(@RequestParam(value = "ip_status") String ipStatus,
+                         @RequestParam(value = "ip_limit") String ipLimit,
+                         @RequestParam(value = "useragent_status") String agentStatus,
+                         @RequestParam(value = "useragent_limit") String agentLimit,
+                         @RequestParam(value = "referer_status") String refererStatus,
+                         @RequestParam(value = "referer_limit") String refererLimit) {
         try {
-            Key key = keyService.getByKey("ip_status");
-            if ("1".equals(key.getValue())) {
-                key.setValue("0");
-            } else {
-                key.setValue("1");
-            }
-            keyService.update(key);
+            Key ipStatusKey = keyService.getByKey("ip_status");
+            ipStatusKey.setValue(ipStatus);
+            keyService.update(ipStatusKey);
+
+            Key ipLimitKey = keyService.getByKey("ip_limit");
+            ipLimitKey.setValue(ipLimit);
+            keyService.update(ipLimitKey);
+
+            Key agentStatusKey = keyService.getByKey("useragent_status");
+            agentStatusKey.setValue(agentStatus);
+            keyService.update(agentStatusKey);
+
+            Key agentLimitKey = keyService.getByKey("useragent_limit");
+            agentLimitKey.setValue(agentLimit);
+            keyService.update(agentLimitKey);
+
+            Key refererStatusKey = keyService.getByKey("referer_status");
+            refererStatusKey.setValue(refererStatus);
+            keyService.update(refererStatusKey);
+
+            Key refererLimitKey = keyService.getByKey("referer_limit");
+            refererLimitKey.setValue(refererLimit);
+            keyService.update(refererLimitKey);
+
             return Msg.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,42 +136,77 @@ public class KeyController {
         }
     }
 
-    @PostMapping(value = "/referer/update")
-    public Msg referer(@RequestParam(value = "referer") String referer) {
+    @GetMapping(value = "/config/set")
+    public Msg getConfigSet() {
         try {
-            Key key = keyService.getByKey(KeyValue.referer_limit.getValue());
-            if (key == null) {
-                Key newKey = new Key();
-                newKey.setKeystr(KeyValue.referer_limit.getValue());
-                newKey.setValue(referer);
-                keyService.add(newKey);
-                return Msg.success().add("key", newKey);
-            }
-            key.setValue(referer);
-            keyService.update(key);
-            return Msg.success().add("key", key);
+            Map<String, String> map = new HashMap<>();
+            map.put("ip_status", keyService.getByKey("ip_status").getValue());
+            map.put("ip_limit", keyService.getByKey("ip_limit").getValue());
+            map.put("useragent_status", keyService.getByKey("useragent_status").getValue());
+            map.put("useragent_limit", keyService.getByKey("useragent_limit").getValue());
+            map.put("referer_status", keyService.getByKey("referer_status").getValue());
+            map.put("referer_limit", keyService.getByKey("referer_limit").getValue());
+
+            return Msg.success().add("config", map);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
         }
     }
 
-    @GetMapping(value = "/referer/status")
-    public Msg refererStatus() {
-        try {
-            Key key = keyService.getByKey("referer_status");
-            if ("1".equals(key.getValue())) {
-                key.setValue("0");
-            } else {
-                key.setValue("1");
-            }
-            keyService.update(key);
-            return Msg.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Msg.fail();
-        }
-    }
+//    @GetMapping(value = "/ip/status")
+//    public Msg ipStatus() {
+//        try {
+//            Key key = keyService.getByKey("ip_status");
+//            if ("1".equals(key.getValue())) {
+//                key.setValue("0");
+//            } else {
+//                key.setValue("1");
+//            }
+//            keyService.update(key);
+//            return Msg.success();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return Msg.fail();
+//        }
+//    }
+
+//    @PostMapping(value = "/referer/update")
+//    public Msg referer(@RequestParam(value = "referer") String referer) {
+//        try {
+//            Key key = keyService.getByKey(KeyValue.referer_limit.getValue());
+//            if (key == null) {
+//                Key newKey = new Key();
+//                newKey.setKeystr(KeyValue.referer_limit.getValue());
+//                newKey.setValue(referer);
+//                keyService.add(newKey);
+//                return Msg.success().add("key", newKey);
+//            }
+//            key.setValue(referer);
+//            keyService.update(key);
+//            return Msg.success().add("key", key);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return Msg.fail();
+//        }
+//    }
+
+//    @GetMapping(value = "/referer/status")
+//    public Msg refererStatus() {
+//        try {
+//            Key key = keyService.getByKey("referer_status");
+//            if ("1".equals(key.getValue())) {
+//                key.setValue("0");
+//            } else {
+//                key.setValue("1");
+//            }
+//            keyService.update(key);
+//            return Msg.success();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return Msg.fail();
+//        }
+//    }
 
     @PostMapping
     public Msg add(@Valid Key key) {

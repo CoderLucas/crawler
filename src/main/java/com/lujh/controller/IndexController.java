@@ -38,4 +38,19 @@ public class IndexController {
     public String admin(){
         return "admin";
     }
+
+    @GetMapping("/ip")
+    public String ip(){
+        return "ip";
+    }
+
+    @GetMapping("/useragent")
+    public String useragent(){
+        return "useragent";
+    }
+
+    @GetMapping("/referer")
+    public String referer(){
+        return "referer";
+    }
 }

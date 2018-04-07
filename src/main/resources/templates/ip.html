@@ -68,8 +68,8 @@
         <div class="grid_12">
             <nav class="primary">
                 <ul>
-                    <li class="curent"><a href="admin.html">系统设置</a></li>
-                    <li><a href="ip.html">IP</a></li>
+                    <li><a href="admin.html">系统设置</a></li>
+                    <li class="curent"><a href="ip.html">IP</a></li>
                     <li><a href="useragent.html">User-Agent</a></li>
                     <li><a href="referer.html">Referer</a></li>
                 </ul>
@@ -84,11 +84,7 @@
 
     <div class="container_12">
 
-        <button type="button" id="save_btn" style="width:100px; float:right;">保存</button>
-
-        <div class="clear"></div>
-
-        <h3>IP拦截设置</h3>
+        <h3>IP访问列表</h3>
         <table>
             <tr>
                 <th class="bg" width="40%">IP拦截开启状态</th>
@@ -97,16 +93,10 @@
                     <input type="radio" name="ip_status" value="0"/>关闭
                 </th>
             </tr>
-            <tr>
-                <th class="bg" width="40%">IP拦截次数</th>
-                <th width="60%">
-                    <input type="text" id="ip_limit" name="ip_limit" value=""/>
-                </th>
-            </tr>
         </table>
         <div class="clear"></div>
 
-        <h3>User-Agent设置</h3>
+        <h3>IP白名单</h3>
         <table>
             <tr>
                 <th class="bg" width="40%">开启状态</th>
@@ -115,28 +105,16 @@
                     <input type="radio" name="useragent_status" value="0"/>关闭
                 </th>
             </tr>
-            <tr>
-                <th class="bg" width="40%">浏览器限制</th>
-                <th width="60%">
-                    <input type="text" id="useragent_limit" name="useragent_limit" value=""/>
-                </th>
-            </tr>
         </table>
         <div class="clear"></div>
 
-        <h3>Referer设置</h3>
+        <h3>IP黑名单</h3>
         <table>
             <tr>
                 <th class="bg" width="40%">开启状态</th>
                 <th width="60%">
                     <input type="radio" name="referer_status" value="1"/>开启
                     <input type="radio" name="referer_status" value="0"/>关闭
-                </th>
-            </tr>
-            <tr>
-                <th class="bg" width="40%">来源限制</th>
-                <th width="60%">
-                    <input type="text" id="referer_limit" name="referer_limit" value=""/>
                 </th>
             </tr>
         </table>
@@ -186,55 +164,6 @@
 <script type="text/javascript">
 
     $(function () {
-        // alert();
-        getConfig();
-    });
-
-    function getConfig() {
-        $.ajax({
-            url: "/key/config/set",
-            type: "GET",
-            success: function (result) {
-                console.log(result);
-                var ip = result.data.config.ip_status;
-                var useragent = result.data.config.useragent_status;
-                var referer = result.data.config.referer_status;
-
-                $("input[name='ip_status'][value="+ip+"]").prop("checked", true);
-                $("#ip_limit").val(result.data.config.ip_limit);
-                $("input[name='useragent_status'][value="+useragent+"]").prop("checked", true);
-                $("#useragent_limit").val(result.data.config.useragent_limit);
-                $("input[name='referer_status'][value="+referer+"]").prop("checked", true);
-                $("#referer_limit").val(result.data.config.referer_limit);
-            }
-        });
-    }
-
-    $("#save_btn").click(function () {
-        var form = $("<form></form>");
-        var ipput1 = $("<input/>").attr('value', $("input[name='ip_status']:checked").val()).attr("name", "ip_status");
-        var ipput2 = $("<input/>").attr('value', $("#ip_limit").val()).attr("name", "ip_limit");
-        var ipput3 = $("<input/>").attr('value', $("input[name='useragent_status']:checked").val()).attr("name", "useragent_status");
-        var ipput4 = $("<input/>").attr('value', $("#useragent_limit").val()).attr("name", "useragent_limit");
-        var ipput5 = $("<input/>").attr('value', $("input[name='referer_status']:checked").val()).attr("name", "referer_status");
-        var ipput6 = $("<input/>").attr('value', $("#referer_limit").val()).attr("name", "referer_limit");
-
-        form.append(ipput1);
-        form.append(ipput2);
-        form.append(ipput3);
-        form.append(ipput4);
-        form.append(ipput5);
-        form.append(ipput6);
-
-        $.ajax({
-            url: "/key/config/set",
-            data: form.serialize(),
-            type: "POST",
-            success: function (result) {
-                console.log(result);
-                alert(result.message);
-            }
-        });
     });
 
 </script>
