@@ -32,19 +32,18 @@ public class AccessLogController {
      * @return
      */
     @GetMapping(value = "/ip/list")
-    public Msg ipList(@RequestParam(value = "from") long from,
-                      @RequestParam(value = "to") long to) {
+    public Msg ipList() {
         try {
-            Date fromDate = new Date(from);
-            Date toDate = new Date(to);
-            List<String> ipList = accessLogService.listByIP(DateUtil.getStartTime(fromDate), DateUtil.getEndTime(toDate));
+            Date fromDate = DateUtil.getStartTime(new Date());
+            Date toDate = DateUtil.getEndTime(new Date());
+            List<String> ipList = accessLogService.listByIP(fromDate, toDate);
             List<AccessLogListOut> accessLogListOutList = new LinkedList<>();
             ipList.forEach(ip -> {
                 AccessLogListOut accessLogListOut = new AccessLogListOut();
                 accessLogListOut.setIp(ip);
-                accessLogListOut.setSuccessNumber(accessLogService.countByIP(ip, AccessLogStatus.SUCCESS, DateUtil.getStartTime(fromDate), toDate));
-                accessLogListOut.setFailNumber(accessLogService.countByIP(ip, AccessLogStatus.FAIL, DateUtil.getStartTime(fromDate), toDate));
-                accessLogListOut.setFromTime(DateFormatUtils.format(DateUtil.getStartTime(fromDate), DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
+                accessLogListOut.setSuccessNumber(accessLogService.countByIP(ip, AccessLogStatus.SUCCESS, fromDate, toDate));
+                accessLogListOut.setFailNumber(accessLogService.countByIP(ip, AccessLogStatus.FAIL, fromDate, toDate));
+                accessLogListOut.setFromTime(DateFormatUtils.format(fromDate, DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
                 accessLogListOut.setToTime(DateFormatUtils.format(toDate, DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
                 accessLogListOutList.add(accessLogListOut);
             });
