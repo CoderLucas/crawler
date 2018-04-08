@@ -164,7 +164,38 @@
 <script type="text/javascript">
 
     $(function () {
+
     });
+
+    function getIpList() {
+        $.ajax({
+            url: "/accesslog/ip/list",
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                var user = result.data.pageInfo.list;
+                $.each(user,function(index,item){
+                    var ip = $("<th></th>").append(item.ip);
+                    var success = $("<th></th>").append(item.successNumber);
+                    var fail = $("<th></th>").append(item.failNumber);
+
+
+                    var numLabel = $("<td></td>").append(num);
+
+                    var delBtn = $("<button></button>").addClass("btn btn-xs btn-danger delete_btn")
+                            .append($("<span></span>").addClass("icon-trash bigger-120"))
+                            .append("删除").attr("delete_id",item.sid);
+                    var btnTd = $("<td></td>").append(delBtn);
+                    var snameTd = $("<td></td>").append(item.sname);
+
+                    $("<tr></tr>").append(numLabel)
+                            .append(snameTd)
+                            .append(btnTd)
+                            .appendTo("#user_table tbody");
+                });
+            }
+        });
+    }
 
 </script>
 </body>

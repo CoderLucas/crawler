@@ -1,6 +1,10 @@
 package com.lujh.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lujh.bean.AccessLogListOut;
+import com.lujh.bean.Goods;
+import com.lujh.bean.GoodsListOut;
 import com.lujh.service.AccessLogService;
 import com.lujh.service.KeyService;
 import com.lujh.util.DateUtil;
@@ -32,8 +36,11 @@ public class AccessLogController {
      * @return
      */
     @GetMapping(value = "/ip/list")
-    public Msg ipList() {
+    public Msg ipList(@RequestParam(value = "pn", defaultValue = "1", required = false) Integer pn,
+                      @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
         try {
+
+            PageHelper.startPage(pn, size);
             Date fromDate = DateUtil.getStartTime(new Date());
             Date toDate = DateUtil.getEndTime(new Date());
             List<String> ipList = accessLogService.listByIP(fromDate, toDate);
@@ -47,7 +54,9 @@ public class AccessLogController {
                 accessLogListOut.setToTime(DateFormatUtils.format(toDate, DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
                 accessLogListOutList.add(accessLogListOut);
             });
-            return Msg.success().add("ip_list", accessLogListOutList);
+            PageInfo pageInfo = new PageInfo(ipList, 5);
+            pageInfo.setList(accessLogListOutList);
+            return Msg.success().add("pageInfo", pageInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
