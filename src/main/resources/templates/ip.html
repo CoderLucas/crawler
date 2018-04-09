@@ -85,13 +85,12 @@
     <div class="container_12">
 
         <h3>IP访问列表</h3>
-        <table>
+        <table id="ip_access_table">
             <tr>
-                <th class="bg" width="40%">IP拦截开启状态</th>
-                <th width="60%">
-                    <input type="radio" name="ip_status" value="1"/>开启
-                    <input type="radio" name="ip_status" value="0"/>关闭
-                </th>
+                <th class="bg" width="20%">IP地址</th>
+                <th width="20%">访问成功次数</th>
+                <th class="bg" width="20%">拦截次数</th>
+                <th width="40%">编辑</th>
             </tr>
         </table>
         <div class="clear"></div>
@@ -99,11 +98,8 @@
         <h3>IP白名单</h3>
         <table>
             <tr>
-                <th class="bg" width="40%">开启状态</th>
-                <th width="60%">
-                    <input type="radio" name="useragent_status" value="1"/>开启
-                    <input type="radio" name="useragent_status" value="0"/>关闭
-                </th>
+                <th class="bg" width="40%">IP地址</th>
+                <th width="60%">编辑</th>
             </tr>
         </table>
         <div class="clear"></div>
@@ -111,13 +107,13 @@
         <h3>IP黑名单</h3>
         <table>
             <tr>
-                <th class="bg" width="40%">开启状态</th>
-                <th width="60%">
-                    <input type="radio" name="referer_status" value="1"/>开启
-                    <input type="radio" name="referer_status" value="0"/>关闭
-                </th>
+                <th class="bg" width="40%">IP地址</th>
+                <th width="60%">编辑</th>
             </tr>
         </table>
+
+        <button type="button" id="save_btn" style=" float:right;">保存</button>
+
     </div>
 </section>
 
@@ -164,7 +160,7 @@
 <script type="text/javascript">
 
     $(function () {
-
+        getIpList();
     });
 
     function getIpList() {
@@ -175,23 +171,43 @@
                 console.log(result);
                 var user = result.data.pageInfo.list;
                 $.each(user,function(index,item){
-                    var ip = $("<th></th>").append(item.ip);
-                    var success = $("<th></th>").append(item.successNumber);
-                    var fail = $("<th></th>").append(item.failNumber);
+                    var ipLable = $("<th></th>").append(item.ip);
+                    var successLable = $("<th></th>").append(item.successNumber);
+                    var failLable = $("<th></th>").append(item.failNumber);
 
+                    var addWhiteBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("加入白名单");
+                    var addBlackBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("加入黑名单");
+                    var detailBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("详情");
+                    var editLabel = $("<th></th>").append(addWhiteBtn).append(addBlackBtn).append(detailBtn);
 
-                    var numLabel = $("<td></td>").append(num);
+                    $("<tr></tr>").append(ipLable)
+                            .append(successLable)
+                            .append(failLable)
+                            .append(editLabel)
+                            .appendTo("#ip_access_table tbody");
+                });
+            }
+        });
+    }
 
-                    var delBtn = $("<button></button>").addClass("btn btn-xs btn-danger delete_btn")
-                            .append($("<span></span>").addClass("icon-trash bigger-120"))
-                            .append("删除").attr("delete_id",item.sid);
-                    var btnTd = $("<td></td>").append(delBtn);
-                    var snameTd = $("<td></td>").append(item.sname);
+    function getWhiteList() {
+        $.ajax({
+            url: "/accesslog/ip/list",
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                var user = result.data.pageInfo.list;
+                $.each(user,function(index,item){
+                    var ipLable = $("<th></th>").append(item.ip);
 
-                    $("<tr></tr>").append(numLabel)
-                            .append(snameTd)
-                            .append(btnTd)
-                            .appendTo("#user_table tbody");
+                    var detailBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("详情");
+                    var editLabel = $("<th></th>").append(addWhiteBtn).append(addBlackBtn).append(detailBtn);
+
+                    $("<tr></tr>").append(ipLable)
+                        .append(successLable)
+                        .append(failLable)
+                        .append(editLabel)
+                        .appendTo("#ip_access_table tbody");
                 });
             }
         });

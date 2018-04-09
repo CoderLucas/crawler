@@ -3,8 +3,6 @@ package com.lujh.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lujh.bean.AccessLogListOut;
-import com.lujh.bean.Goods;
-import com.lujh.bean.GoodsListOut;
 import com.lujh.service.AccessLogService;
 import com.lujh.service.KeyService;
 import com.lujh.util.DateUtil;
@@ -101,10 +99,10 @@ public class AccessLogController {
             List<String> refererList = accessLogService.listByReferer(fromDate, toDate);
             Map<String, Integer> referMap = new HashMap<>();
             refererList.forEach(referer -> {
-                int count = accessLogService.countByReferer(referer,null, DateUtil.getStartTime(fromDate), toDate);
+                int count = accessLogService.countByReferer(referer, null, DateUtil.getStartTime(fromDate), toDate);
                 referMap.put(referer, count);
             });
-            return Msg.success().add("refererMap",referMap);
+            return Msg.success().add("refererMap", referMap);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
@@ -113,17 +111,17 @@ public class AccessLogController {
 
     @GetMapping(value = "/useragent")
     public Msg useragent(@RequestParam(value = "from") long from,
-                         @RequestParam(value = "to") long to){
+                         @RequestParam(value = "to") long to) {
         try {
             Date fromDate = new Date(from);
             Date toDate = new Date(to);
-            List<String> useragentList = accessLogService.listByUserAgent(fromDate,toDate);
+            List<String> useragentList = accessLogService.listByUserAgent(fromDate, toDate);
             Map<String, Integer> useragentMap = new HashMap<>();
             useragentList.forEach(useragent -> {
-                int count = accessLogService.countByUserAgent(useragent,null, DateUtil.getStartTime(fromDate), toDate);
+                int count = accessLogService.countByUserAgent(useragent, null, DateUtil.getStartTime(fromDate), toDate);
                 useragentMap.put(useragent, count);
             });
-            return Msg.success().add("useragentMap",useragentMap);
+            return Msg.success().add("useragentMap", useragentMap);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();

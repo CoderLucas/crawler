@@ -5,6 +5,7 @@ import com.lujh.service.AccessLogService;
 import com.lujh.service.KeyService;
 import com.lujh.util.enums.AccessLogStatus;
 import com.lujh.util.enums.KeyValue;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -77,7 +78,7 @@ public class MyInterceptor implements HandlerInterceptor {
         if ("1".equals(refererStatus)) {
             List<String> refererList = keyService.getValueByKey(KeyValue.referer_limit.getValue());
             refererList.forEach(string -> {
-                if (referer.toLowerCase().contains(string)) {
+                if (StringUtils.isNotBlank(referer) && referer.toLowerCase().contains(string)) {
                     wrapper.set(false);
                     return;
                 }

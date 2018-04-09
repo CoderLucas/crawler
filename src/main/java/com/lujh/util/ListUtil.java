@@ -26,24 +26,14 @@ public class ListUtil {
     }
 
     /**
-     *
      * @param list
      * @return
      */
-    public static String fromList(List<String> list){
-        return StringUtils.join(list.toArray(),",");
+    public static String fromList(List<String> list) {
+        return StringUtils.join(list.toArray(), ",");
     }
 
     public static void main(String[] args) {
 
-//        String string = "ABCD";
-//        if (string.toLowerCase().contains("a")){
-//            System.out.println("12");
-//        }
-
-        List<String> list = new ArrayList<>();
-        list.forEach(s -> {
-            System.out.println("111");
-        });
     }
 }
