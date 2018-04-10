@@ -35,5 +35,7 @@ public class ListUtil {
 
     public static void main(String[] args) {
 
+        String list = null;
+        list.equals("ddd");
     }
 }

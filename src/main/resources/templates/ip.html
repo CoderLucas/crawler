@@ -96,24 +96,34 @@
         <div class="clear"></div>
 
         <h3>IP白名单</h3>
-        <table>
+        <div class="grid_12" style="display: flex">
+            <div>
+                <form id="add_ip_white_from">
+                    <input type="text" name="name" class="entry_form" placeholder="192.168..." id="input_search"/>
+                </form>
+            </div>
+            <div>
+                <button type="button" id="add_ip_white_btn" style="width:100px;">新增</button>
+            </div>
+        </div><!-- .grid_3 -->
+        <div class="clear"></div>
+
+        <table id="ip_white_list_table">
             <tr>
-                <th class="bg" width="40%">IP地址</th>
-                <th width="60%">编辑</th>
+                <th class="bg" width="60%">IP地址</th>
+                <th width="40%">编辑</th>
             </tr>
         </table>
         <div class="clear"></div>
 
         <h3>IP黑名单</h3>
-        <table>
+        <button type="button" id="add_ip_black_btn" style="width:100px; float:right;">新增</button>
+        <table id="ip_black_list_table">
             <tr>
-                <th class="bg" width="40%">IP地址</th>
-                <th width="60%">编辑</th>
+                <th class="bg" width="60%">IP地址</th>
+                <th width="40%">编辑</th>
             </tr>
         </table>
-
-        <button type="button" id="save_btn" style=" float:right;">保存</button>
-
     </div>
 </section>
 
@@ -161,6 +171,8 @@
 
     $(function () {
         getIpList();
+        getWhiteList();
+        getBlackList();
     });
 
     function getIpList() {
@@ -170,37 +182,14 @@
             success: function (result) {
                 console.log(result);
                 var user = result.data.pageInfo.list;
-                $.each(user,function(index,item){
+                $.each(user, function (index, item) {
                     var ipLable = $("<th></th>").append(item.ip);
                     var successLable = $("<th></th>").append(item.successNumber);
                     var failLable = $("<th></th>").append(item.failNumber);
 
-                    var addWhiteBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("加入白名单");
-                    var addBlackBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("加入黑名单");
-                    var detailBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("详情");
-                    var editLabel = $("<th></th>").append(addWhiteBtn).append(addBlackBtn).append(detailBtn);
-
-                    $("<tr></tr>").append(ipLable)
-                            .append(successLable)
-                            .append(failLable)
-                            .append(editLabel)
-                            .appendTo("#ip_access_table tbody");
-                });
-            }
-        });
-    }
-
-    function getWhiteList() {
-        $.ajax({
-            url: "/accesslog/ip/list",
-            type: "GET",
-            success: function (result) {
-                console.log(result);
-                var user = result.data.pageInfo.list;
-                $.each(user,function(index,item){
-                    var ipLable = $("<th></th>").append(item.ip);
-
-                    var detailBtn = $("<button></button>").attr("type", "button").attr("id","").attr("style", "width:100px; float:right;").append("详情");
+                    var addWhiteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("加入白名单").attr("item_id", item.ip);
+                    var addBlackBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("加入黑名单").attr("item_id", item.ip);
+                    var detailBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("详情").attr("item_id", item.ip);
                     var editLabel = $("<th></th>").append(addWhiteBtn).append(addBlackBtn).append(detailBtn);
 
                     $("<tr></tr>").append(ipLable)
@@ -212,6 +201,78 @@
             }
         });
     }
+
+    function getWhiteList() {
+        $.ajax({
+            url: "/key/ipwhitelist",
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                var user = result.data.pageInfo.list;
+                $.each(user, function (index, item) {
+                    var ipLable = $("<th></th>").append(item);
+
+                    var deleteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("删除").attr("item_id", item);
+                    var editLabel = $("<th></th>").append(deleteBtn);
+
+                    $("<tr></tr>").append(ipLable)
+                        .append(editLabel)
+                        .appendTo("#ip_white_list_table tbody");
+                });
+            }
+        });
+    }
+
+    $("#add_ip_white_btn").click(function () {
+
+        $.ajax({
+            url: "/key/config/set",
+            data: form.serialize(),
+            type: "POST",
+            success: function (result) {
+                console.log(result);
+                alert(result.message);
+            }
+        });
+    });
+
+    function getBlackList() {
+        $.ajax({
+            url: "/key/ipblacklist",
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                var user = result.data.pageInfo.list;
+                $.each(user, function (index, item) {
+                    var ipLable = $("<th></th>").append(item);
+
+                    var deleteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("删除").attr("item_id", item).addClass("delete_ip_black_btn");
+                    var editLabel = $("<th></th>").append(deleteBtn);
+
+                    $("<tr></tr>").append(ipLable)
+                        .append(editLabel)
+                        .appendTo("#ip_black_list_table tbody");
+                });
+            }
+        });
+    }
+
+    //单个删除按钮
+    $('.delete_ip_black_btn').live('click', function () {
+        var ip = $(this).attr("item_id");
+        if (confirm("是否删除【" + ip + "】？")) {
+            //确认发送ajax请求删除
+            $.ajax({
+                url: "/key/ipblacklist/delete",
+                type: "POST",
+                data: "ip=" + ip,
+                success: function (result) {
+                    console.log(result);
+                    location.reload();
+                }
+            });
+        }
+    });
 
 </script>
 </body>
