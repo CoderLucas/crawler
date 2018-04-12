@@ -97,15 +97,16 @@
 
         <h3>IP白名单</h3>
         <div class="grid_12" style="display: flex">
-            <div>
-                <form id="add_ip_white_from">
-                    <input type="text" name="name" class="entry_form" placeholder="192.168..." id="input_search"/>
+            <div id="add_ip_white_div">
+                <form>
+                    <input type="text" name="ip" class="entry_form" placeholder="192.168..."/>
                 </form>
             </div>
             <div>
                 <button type="button" id="add_ip_white_btn" style="width:100px;">新增</button>
             </div>
         </div><!-- .grid_3 -->
+
         <div class="clear"></div>
 
         <table id="ip_white_list_table">
@@ -117,7 +118,19 @@
         <div class="clear"></div>
 
         <h3>IP黑名单</h3>
-        <button type="button" id="add_ip_black_btn" style="width:100px; float:right;">新增</button>
+        <div class="grid_12" style="display: flex">
+            <div id="add_ip_black_div">
+                <form>
+                    <input type="text" name="ip" class="entry_form" placeholder="192.168..."/>
+                </form>
+            </div>
+            <div>
+                <button type="button" id="add_ip_black_btn" style="width:100px;">新增</button>
+            </div>
+        </div><!-- .grid_3 -->
+
+        <div class="clear"></div>
+
         <table id="ip_black_list_table">
             <tr>
                 <th class="bg" width="60%">IP地址</th>
@@ -183,13 +196,13 @@
                 console.log(result);
                 var user = result.data.pageInfo.list;
                 $.each(user, function (index, item) {
-                    var ipLable = $("<th></th>").append(item.ip);
+                    var ipLable = $("<th></th>").append(item.ip).addClass("bg");
                     var successLable = $("<th></th>").append(item.successNumber);
-                    var failLable = $("<th></th>").append(item.failNumber);
+                    var failLable = $("<th></th>").append(item.failNumber).addClass("bg");
 
-                    var addWhiteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("加入白名单").attr("item_id", item.ip);
-                    var addBlackBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("加入黑名单").attr("item_id", item.ip);
-                    var detailBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("详情").attr("item_id", item.ip);
+                    var addWhiteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("加入白名单").attr("item_id", item.ip).addClass("add_white");
+                    var addBlackBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("加入黑名单").attr("item_id", item.ip).addClass("add_black");
+                    var detailBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("详情").attr("item_id", item.ip).addClass("detail_ip");
                     var editLabel = $("<th></th>").append(addWhiteBtn).append(addBlackBtn).append(detailBtn);
 
                     $("<tr></tr>").append(ipLable)
@@ -202,6 +215,32 @@
         });
     }
 
+    $('.add_white').live('click', function () {
+        var ip = $(this).attr("item_id");
+        $.ajax({
+            url: "/key/ipwhitelist/add",
+            data: "ip=" + ip,
+            type: "POST",
+            success: function (result) {
+                console.log(result);
+                location.reload();
+            }
+        });
+    });
+
+    $('.add_black').live('click', function () {
+        var ip = $(this).attr("item_id");
+        $.ajax({
+            url: "/key/ipblacklist/add",
+            data: "ip=" + ip,
+            type: "POST",
+            success: function (result) {
+                console.log(result);
+                location.reload();
+            }
+        });
+    });
+
     function getWhiteList() {
         $.ajax({
             url: "/key/ipwhitelist",
@@ -210,9 +249,9 @@
                 console.log(result);
                 var user = result.data.pageInfo.list;
                 $.each(user, function (index, item) {
-                    var ipLable = $("<th></th>").append(item);
+                    var ipLable = $("<th></th>").append(item).addClass("bg");
 
-                    var deleteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("删除").attr("item_id", item);
+                    var deleteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("删除").attr("item_id", item).addClass("delete_ip_white_btn");
                     var editLabel = $("<th></th>").append(deleteBtn);
 
                     $("<tr></tr>").append(ipLable)
@@ -226,14 +265,31 @@
     $("#add_ip_white_btn").click(function () {
 
         $.ajax({
-            url: "/key/config/set",
-            data: form.serialize(),
+            url: "/key/ipwhitelist/add",
+            data: $("#add_ip_white_div form").serialize(),
             type: "POST",
             success: function (result) {
                 console.log(result);
-                alert(result.message);
+                location.reload();
             }
         });
+    });
+
+    //单个删除按钮
+    $('.delete_ip_white_btn').live('click', function () {
+        var ip = $(this).attr("item_id");
+        if (confirm("是否删除【" + ip + "】？")) {
+            //确认发送ajax请求删除
+            $.ajax({
+                url: "/key/ipwhitelist/delete",
+                type: "POST",
+                data: "ip=" + ip,
+                success: function (result) {
+                    console.log(result);
+                    location.reload();
+                }
+            });
+        }
     });
 
     function getBlackList() {
@@ -244,7 +300,7 @@
                 console.log(result);
                 var user = result.data.pageInfo.list;
                 $.each(user, function (index, item) {
-                    var ipLable = $("<th></th>").append(item);
+                    var ipLable = $("<th></th>").append(item).addClass("bg");
 
                     var deleteBtn = $("<button></button>").attr("type", "button").attr("id", "").attr("style", "width:100px; float:right;").append("删除").attr("item_id", item).addClass("delete_ip_black_btn");
                     var editLabel = $("<th></th>").append(deleteBtn);
@@ -256,6 +312,19 @@
             }
         });
     }
+
+    $("#add_ip_black_btn").click(function () {
+
+        $.ajax({
+            url: "/key/ipblacklist/add",
+            data: $("#add_ip_black_div form").serialize(),
+            type: "POST",
+            success: function (result) {
+                console.log(result);
+                location.reload();
+            }
+        });
+    });
 
     //单个删除按钮
     $('.delete_ip_black_btn').live('click', function () {

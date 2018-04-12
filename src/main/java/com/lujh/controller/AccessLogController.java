@@ -7,6 +7,7 @@ import com.lujh.service.AccessLogService;
 import com.lujh.service.KeyService;
 import com.lujh.util.DateUtil;
 import com.lujh.util.Msg;
+import com.lujh.util.SimpleObject;
 import com.lujh.util.enums.AccessLogStatus;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class AccessLogController {
      */
     @GetMapping(value = "/ip/list")
     public Msg ipList(@RequestParam(value = "pn", defaultValue = "1", required = false) Integer pn,
-                      @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
+                      @RequestParam(value = "size", defaultValue = "1000", required = false) Integer size) {
         try {
 
             PageHelper.startPage(pn, size);
@@ -91,18 +92,28 @@ public class AccessLogController {
     }
 
     @GetMapping(value = "/referer")
-    public Msg refererList(@RequestParam(value = "from") long from,
-                           @RequestParam(value = "to") long to) {
+    public Msg refererList(@RequestParam(value = "pn", defaultValue = "1", required = false) Integer pn,
+                           @RequestParam(value = "size", defaultValue = "1000", required = false) Integer size) {
         try {
-            Date fromDate = new Date(from);
-            Date toDate = new Date(to);
+            PageHelper.startPage(pn, size);
+            Date fromDate = DateUtil.getStartTime(new Date());
+            Date toDate = DateUtil.getEndTime(new Date());
             List<String> refererList = accessLogService.listByReferer(fromDate, toDate);
-            Map<String, Integer> referMap = new HashMap<>();
+            List<SimpleObject> objectList = new ArrayList<>();
             refererList.forEach(referer -> {
                 int count = accessLogService.countByReferer(referer, null, DateUtil.getStartTime(fromDate), toDate);
-                referMap.put(referer, count);
+                SimpleObject object = new SimpleObject(referer, String.valueOf(count));
+                objectList.add(object);
             });
-            return Msg.success().add("refererMap", referMap);
+            Collections.sort(objectList, new Comparator<SimpleObject>() {
+                @Override
+                public int compare(SimpleObject o1, SimpleObject o2) {
+                    return Integer.valueOf(o2.getValue()).compareTo(Integer.valueOf(o1.getValue()));
+                }
+            });
+            PageInfo pageInfo = new PageInfo(refererList, 5);
+            pageInfo.setList(objectList);
+            return Msg.success().add("pageInfo", pageInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
@@ -110,18 +121,28 @@ public class AccessLogController {
     }
 
     @GetMapping(value = "/useragent")
-    public Msg useragent(@RequestParam(value = "from") long from,
-                         @RequestParam(value = "to") long to) {
+    public Msg useragent(@RequestParam(value = "pn", defaultValue = "1", required = false) Integer pn,
+                         @RequestParam(value = "size", defaultValue = "1000", required = false) Integer size) {
         try {
-            Date fromDate = new Date(from);
-            Date toDate = new Date(to);
+            PageHelper.startPage(pn, size);
+            Date fromDate = DateUtil.getStartTime(new Date());
+            Date toDate = DateUtil.getEndTime(new Date());
             List<String> useragentList = accessLogService.listByUserAgent(fromDate, toDate);
-            Map<String, Integer> useragentMap = new HashMap<>();
+            List<SimpleObject> objectList = new ArrayList<>();
             useragentList.forEach(useragent -> {
                 int count = accessLogService.countByUserAgent(useragent, null, DateUtil.getStartTime(fromDate), toDate);
-                useragentMap.put(useragent, count);
+                SimpleObject object = new SimpleObject(useragent, String.valueOf(count));
+                objectList.add(object);
             });
-            return Msg.success().add("useragentMap", useragentMap);
+            Collections.sort(objectList, new Comparator<SimpleObject>() {
+                @Override
+                public int compare(SimpleObject o1, SimpleObject o2) {
+                    return Integer.valueOf(o2.getValue()).compareTo(Integer.valueOf(o1.getValue()));
+                }
+            });
+            PageInfo pageInfo = new PageInfo(useragentList, 5);
+            pageInfo.setList(objectList);
+            return Msg.success().add("pageInfo", pageInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();
