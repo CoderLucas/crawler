@@ -36,7 +36,8 @@ public class MyInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        String ip = getIpAddr(request);
+        String ip = getIpAddr1(request);
+        System.out.println(ip);
         String referer = request.getHeader("Referer");
         String userAgent = request.getHeader("User-Agent");
         AccessLog accessLog = new AccessLog();
@@ -110,7 +111,14 @@ public class MyInterceptor implements HandlerInterceptor {
      * @param request
      * @return
      */
-    private static String getIpAddr(HttpServletRequest request) {
+    private String getIpAddr1(HttpServletRequest request) {
+        if (request.getHeader("x-forwarded-for") == null) {
+            return request.getRemoteAddr();
+        }
+        return request.getHeader("x-forwarded-for");
+    }
+
+    private static String getIpAddr2(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
