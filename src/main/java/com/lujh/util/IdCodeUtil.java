@@ -58,8 +58,6 @@ public class IdCodeUtil {
         private static final int MIN_ALPHABET_LENGTH = 16;
         private static final double SEP_DIV = 3.5;
         private static final int GUARD_DIV = 12;
-        private static final Pattern ENCODE_HEX_PATTERN = Pattern.compile("[\\w\\W]{1,12}");
-        private static final String HEX_REGEX = "^[0-9a-fA-F]+$";
 
         private final String salt;
         private final int minHashLength;
@@ -191,60 +189,6 @@ public class IdCodeUtil {
             }
 
             return this._decode(hash, this.alphabet);
-        }
-
-        /**
-         * Encode hexa to string
-         *
-         * @param hexa the hexa to encode
-         * @return the encoded string
-         */
-        public String encodeHex(String hexa) {
-            if (!hexa.matches(HEX_REGEX)) {
-                return "";
-            }
-
-            final List<Long> matched = new ArrayList<Long>();
-
-            final Matcher matcher = ENCODE_HEX_PATTERN.matcher(hexa);
-
-            while (matcher.find()) {
-                matched.add(Long.parseLong("1" + matcher.group(), 16));
-            }
-
-            // conversion
-            final long[] result = new long[matched.size()];
-            for (int i = 0; i < matched.size(); i++) {
-                result[i] = matched.get(i);
-            }
-
-            return this.encode(result);
-        }
-
-        /**
-         * Decode string to numbers
-         *
-         * @param hash the encoded string
-         * @return decoded numbers
-         */
-        public String decodeHex(String hash) {
-            final StringBuilder result = new StringBuilder();
-            final long[] numbers = this.decode(hash);
-
-            for (final long number : numbers) {
-                result.append(Long.toHexString(number).substring(1));
-            }
-
-            return result.toString();
-        }
-
-        public static int checkedCast(long value) {
-            final int result = (int) value;
-            if (result != value) {
-                // don't use checkArgument here, to avoid boxing
-                throw new IllegalArgumentException("Out of range: " + value);
-            }
-            return result;
         }
 
         /* Private methods */
@@ -401,15 +345,6 @@ public class IdCodeUtil {
             }
 
             return number;
-        }
-
-        /**
-         * Get Hashid algorithm version.
-         *
-         * @return Hashids algorithm version implemented.
-         */
-        public String getVersion() {
-            return "1.0.0";
         }
     }
 }
