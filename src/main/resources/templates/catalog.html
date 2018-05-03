@@ -74,7 +74,7 @@
     <header id="branding">
         <div class="grid_4">
             <hgroup>
-                <h1 id="site_logo"><a href="index.html" title=""><img src="images/logo.png"
+                <h1 id="site_logo"><a href="index" title=""><img src="images/logo.png"
                                                                       alt="Online Store Theme Logo"/></a></h1>
             </hgroup>
         </div><!-- .grid_3 -->
@@ -95,16 +95,15 @@
         <div class="grid_12">
             <nav class="primary">
                 <ul>
-                    <li><a href="index.html">首页</a></li>
-                    <li class="curent"><a href="catalog.html">列表</a></li>
+                    <li class="curent"><a href="index">首页</a></li>
+                    <li><a href="catalog">列表</a></li>
                     <li>
-                        <a href="#">All pages</a>
+                        <a href="#">所有</a>
                         <ul class="sub">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="catalog.html">Catalog (grid view)</a></li>
-                            <li><a href="product_page.html">Product view</a></li>
-                            <li><a href="about.html">Contact us</a></li>
-                            <li><a href="404.html">404</a></li>
+                            <li><a href="index">首页</a></li>
+                            <li><a href="catalog">列表</a></li>
+                            <li><a href="about">关于我</a></li>
+                            <li><a href="404">404</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -122,27 +121,7 @@
                 <h3>特价</h3>
 
                 <ul id="specials_list">
-                    <li>
-                        <div class="prev">
-                            <a href="product_page.html"><img src="images/special1.png" alt="" title=""/></a>
-                        </div>
 
-                        <div class="cont">
-                            <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                            <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="prev">
-                            <a href="product_page.html"><img src="images/special2.png" alt="" title=""/></a>
-                        </div>
-
-                        <div class="cont">
-                            <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                            <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                        </div>
-                    </li>
                 </ul>
             </aside><!-- #specials -->
 
@@ -290,7 +269,7 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var image = $("<img/>").attr("src", item.image);
-                    var a = $("<a></a>").attr("href", "#").append(image);
+                    var a = $("<a></a>").attr("href", "product?id=" + item.eid).append(image);
                     var prev = $("<div></div>").addClass("prev").append(a);
 
                     var h3 = $("<h3></h3>").addClass("title").append(item.name);
@@ -325,10 +304,10 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var image = $("<img/>").attr("src", item.image);
-                    var href_img = $("<a></a>").attr("href", "#").append(image);
+                    var href_img = $("<a></a>").attr("href", "product?id=" + item.eid).append(image);
                     var prev = $("<div></div>").addClass("prev").append(href_img);
 
-                    var href_str = $("<a></a>").attr("href", "#").append(item.name);
+                    var href_str = $("<a></a>").attr("href", "product?id=" + item.eid).append(item.name);
                     var old_price = $("<span></span>").addClass("old").append(item.price + ".00");
                     var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice + ".00 元");
                     var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
@@ -348,10 +327,10 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var image = $("<img/>").attr("src", item.image);
-                    var href_img = $("<a></a>").attr("href", "#").append(image);
+                    var href_img = $("<a></a>").attr("href", "product?id=" + item.eid).append(image);
                     var prev = $("<div></div>").addClass("prev").append(href_img);
 
-                    var href_str = $("<a></a>").attr("href", "#").append(item.name);
+                    var href_str = $("<a></a>").attr("href", "product?id=" + item.eid).append(item.name);
                     var old_price = $("<span></span>").addClass("old").append(item.price + ".00");
                     var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice + ".00 元");
                     var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
@@ -396,7 +375,7 @@
 
     $("form").submit(function () {
         var index = document.getElementById("input_search").value;
-        var url = "catalog.html?name=" + index;
+        var url = "catalog?name=" + index;
         self.location.href(url);
     });
 

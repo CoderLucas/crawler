@@ -63,7 +63,7 @@ public class GoodsController {
         try {
             Goods goods = goodsService.get(IdCodeUtil.decode(eid));
             GoodsOut goodsOut = new GoodsOut(goods);
-            return Msg.success().add("goods", goodsOut);
+            return Msg.success().add("good", goodsOut);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();

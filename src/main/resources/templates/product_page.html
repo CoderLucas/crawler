@@ -100,7 +100,7 @@
 
         <div class="grid_4">
             <hgroup>
-                <h1 id="site_logo"><a href="index.html" title=""><img src="images/logo.png"
+                <h1 id="site_logo"><a href="index" title=""><img src="images/logo.png"
                                                                       alt="Online Store Theme Logo"/></a></h1>
             </hgroup>
         </div><!-- .grid_3 -->
@@ -212,35 +212,20 @@
         </div><!-- .sidebar -->
 
         <div id="content" class="grid_9">
-            <h1 class="page_title">商品名</h1>
+            <h1 class="page_title" id="title">商品名</h1>
 
             <div class="product_page">
                 <div class="grid_4 img_slid" id="products">
                     <img class="sale" src="images/sale.png" alt="Sale"/>
                     <div class="preview slides_container">
                         <div class="prev_bg">
-                            <a href="images/produkt_slid.png" class="jqzoom" rel='gal1' title="">
-                                <img src="images/produkt_slid.png" title="" alt=""/>
+                            <a href="images/bg_banner.png" class="jqzoom" rel='gal1' title="" id="image_big">
+                                <img src="images/bg_banner.png" title="" alt="" id="image_small"/>
                             </a>
                         </div>
                     </div><!-- .prev -->
 
                     <ul class="pagination clearfix" id="thumblist">
-                        <li><a class="zoomThumbActive" href='javascript:void(0);'
-                               rel="{gallery: 'gal1', smallimage: './images/produkt_slid.png',largeimage: './images/produkt_slid.png'}"><img
-                                src='images/produkt_slid.png' alt=""/></a></li>
-                        <li><a href='javascript:void(0);'
-                               rel="{gallery: 'gal1', smallimage: './images/produkt_slid1.png',largeimage: './images/produkt_slid1.png'}"><img
-                                src='images/produkt_slid1.png' alt=""/></a></li>
-                        <li><a href='javascript:void(0);'
-                               rel="{gallery: 'gal1', smallimage: './images/produkt_slid2.png',largeimage: './images/produkt_slid2.png'}"><img
-                                src='images/produkt_slid2.png' alt=""/></a></li>
-                        <li><a href='javascript:void(0);'
-                               rel="{gallery: 'gal1', smallimage: './images/produkt_slid3.png',largeimage: './images/produkt_slid3.png'}"><img
-                                src='images/produkt_slid3.png' alt=""/></a></li>
-                        <li><a href='javascript:void(0);'
-                               rel="{gallery: 'gal1', smallimage: './images/produkt_slid4.png',largeimage: './images/produkt_slid4.png'}"><img
-                                src='images/produkt_slid4.png' alt=""/></a></li>
                     </ul>
 
                     <div class="next_prev">
@@ -258,25 +243,25 @@
                             <a class="plus" href="#"></a>
                             <a class="plus" href="#"></a>
                         </div>
-                        <p>描述1</p>
+                        <p id="name">描述1</p>
                         <div class="ava_price">
                             <div class="availability_sku">
                                 <div class="availability">
-                                    库存: <span>100</span>
+                                    库存: <span id="number">10</span>
                                 </div>
                             </div><!-- .availability_sku -->
 
                             <div class="price">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
+                                <div class="price_new" id="price_new">$550.00</div>
+                                <div class="price_old" id="price_old">$725.00</div>
                             </div><!-- .price -->
                         </div><!-- .ava_price -->
 
                         <div class="block_cart">
                             <div class="cart">
-                                <a href="#" class="bay">Add to Cart</a>
-                                <input type="text" name="" class="number" value="1"/>
-                                <span>Quantity:</span>
+                                <a href="#" class="bay">加入购物车</a>
+                                <input type="text" name="" class=" number" value="1"/>
+                                <span>数量:</span>
                             </div>
                             <div class="clear"></div>
                         </div><!-- .block_cart -->
@@ -295,10 +280,7 @@
 
                         <div class="tab1 tab_body">
                             <h4>商品详情</h4>
-                            <p>Here are some verb phrase examples where the verb phrase is the predicate of a sentence.
-                                In this case, the verb phrase consists of the main verb plus any auxiliary, or helping,
-                                verbs. Nulla nec velit. Mauris pulvinar erat non massa. Suspendisse tortor turpis, porta
-                                nec, tempus vitae, iaculis semper, pede.</p>
+                            <p id="introduction">Here.</p>
 
                             <div class="clear"></div>
                         </div><!-- .tab1 .tab_body -->
@@ -422,10 +404,42 @@
 </footer>
 <script type="text/javascript">
 
+    var id = GetQueryString("id");
+
     $(function () {
+        get_product();
         get_specials_product();
         get_hot_product();
     });
+
+    function get_product() {
+
+        $.ajax({
+            url: "/goods/single?id=" + id,
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                var good = result.data.good;
+
+                $("#title").html(good.name);
+                $("#price_old").html(good.price + ".00 元");
+                $("#price_new").html(good.discountprice + ".00 元");
+                $("#name").html(good.name);
+                $("#introduction").html(good.introduction);
+                $("#number").html(good.number);
+                $("#image_big").attr("href", good.image);
+                $("#image_small").attr("src", good.image);
+
+                $.each(good.introductionimage, function(index, item) {
+                    var img = $("<img/>").attr("src", item);
+                    var a = $("<a></a>").attr("href", "javascript:void(0);").attr("rel", "{gallery: 'gal1', smallimage: '" + item + "',largeimage: '" + item + "'}")
+                        .append(img);
+                    var li = $("<li></li>").append(a).appendTo("#thumblist");
+                });
+
+            }
+        });
+    }
 
     function get_specials_product() {
         $.ajax({
@@ -437,10 +451,10 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var image = $("<img/>").attr("src", item.image);
-                    var href_img = $("<a></a>").attr("href", "#").append(image);
+                    var href_img = $("<a></a>").attr("href", "product?id=" + item.eid).append(image);
                     var prev = $("<div></div>").addClass("prev").append(href_img);
 
-                    var href_str = $("<a></a>").attr("href", "#").append(item.name);
+                    var href_str = $("<a></a>").attr("href", "product?id=" + item.eid).append(item.name);
                     var old_price = $("<span></span>").addClass("old").append(item.price + ".00");
                     var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice + ".00 元");
                     var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
@@ -460,10 +474,10 @@
                 var list = result.data.goods.list;
                 $.each(list, function (index, item) {
                     var image = $("<img/>").attr("src", item.image);
-                    var href_img = $("<a></a>").attr("href", "#").append(image);
+                    var href_img = $("<a></a>").attr("href", "product?id=" + item.eid).append(image);
                     var prev = $("<div></div>").addClass("prev").append(href_img);
 
-                    var href_str = $("<a></a>").attr("href", "#").append(item.name);
+                    var href_str = $("<a></a>").attr("href", "product?id=" + item.eid).append(item.name);
                     var old_price = $("<span></span>").addClass("old").append(item.price + ".00");
                     var div_price = $("<div></div>").addClass("prise").append(old_price).append(item.discountprice + ".00 元");
                     var cont = $("<div></div>").addClass("cont").append(href_str).append(div_price);
@@ -471,6 +485,13 @@
                 })
             }
         });
+    }
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&amp;)" + name + "=([^&amp;]*)(&amp;|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return "";
     }
 </script>
 </body>
