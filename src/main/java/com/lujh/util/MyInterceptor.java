@@ -37,9 +37,10 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String ip = getIpAddr(request);
-        System.out.println(ip);
         String referer = request.getHeader("Referer");
         String userAgent = request.getHeader("User-Agent");
+        System.out.println(referer);
+
         AccessLog accessLog = new AccessLog();
         accessLog.setIp(ip);
         accessLog.setReferer(referer);
@@ -90,6 +91,25 @@ public class MyInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
+
+        // user-agent验证
+        Wrapper wrapper1 = new Wrapper(true);
+        String useragentStatus = keyService.getValueByKey(KeyValue.useragent_status.getValue()).get(0);
+        if ("1".equals(useragentStatus)) {
+            List<String> useragentList = keyService.getValueByKey(KeyValue.useragent_limit.getValue());
+            useragentList.forEach(string -> {
+                if (StringUtils.isNotBlank(userAgent) && userAgent.toLowerCase().contains(string)) {
+                    wrapper1.set(false);
+                    return;
+                }
+            });
+            if (!(boolean) wrapper1.get()){
+                accessLog.setStatus(AccessLogStatus.FAIL.getValue());
+                accessLogService.add(accessLog);
+                return false;
+            }
+        }
+
         accessLog.setStatus(AccessLogStatus.SUCCESS.getValue());
         accessLogService.add(accessLog);
         return true;
