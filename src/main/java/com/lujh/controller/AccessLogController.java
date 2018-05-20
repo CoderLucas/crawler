@@ -66,14 +66,12 @@ public class AccessLogController {
      * 按小时分段
      *
      * @param ip
-     * @param hour
      * @return
      */
     @GetMapping(value = "/ip")
-    public Msg ip(@RequestParam(value = "ip") String ip,
-                  @RequestParam(value = "hour") int hour) {
+    public Msg ip(@RequestParam(value = "ip") String ip) {
         try {
-            List<Date> dateList = DateUtil.dateList(hour);
+            List<Date> dateList = DateUtil.dateList(12);
             List<AccessLogListOut> accessLogListOutList = new LinkedList<>();
             for (int i = 0; i < dateList.size() - 1; i++) {
                 AccessLogListOut accessLogListOut = new AccessLogListOut();
@@ -84,7 +82,7 @@ public class AccessLogController {
                 accessLogListOut.setToTime(DateFormatUtils.format(dateList.get(i + 1), DateUtil.DATE_FORMAT_PATTERN_DEFAULT));
                 accessLogListOutList.add(accessLogListOut);
             }
-            return Msg.success().add("list", accessLogListOutList);
+            return Msg.success().add("pageInfo", accessLogListOutList);
         } catch (Exception e) {
             e.printStackTrace();
             return Msg.fail();

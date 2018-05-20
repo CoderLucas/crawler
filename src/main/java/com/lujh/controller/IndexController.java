@@ -53,4 +53,9 @@ public class IndexController {
     public String referer(){
         return "referer";
     }
+
+    @GetMapping("/ipdetail")
+    public String ipdetail(){
+        return "ipdetail";
+    }
 }

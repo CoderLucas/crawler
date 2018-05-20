@@ -215,6 +215,12 @@
         });
     }
 
+    $('.detail_ip').live('click', function () {
+        var ip = $(this).attr("item_id");
+        var url = "ipdetail?ip=" + ip;
+        var newWin = window.open(url);
+    });
+
     $('.add_white').live('click', function () {
         var ip = $(this).attr("item_id");
         $.ajax({

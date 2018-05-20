@@ -71,17 +71,4 @@ public class ListUtil {
         }
     }
 
-    public static void main(String[] args) {
-        Set<M> set = new TreeSet<>();
-        set.add(new M(1,1));
-        set.add(new M(2,2));
-        set.add(new M(3,3));
-        set.add(new M(1,3));
-        set.add(new M(1,4));
-
-        for (M m : set) {
-            System.out.println(m);
-        }
-    }
-
 }
