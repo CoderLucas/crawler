@@ -6,7 +6,7 @@
 	<groupId>com.lujh</groupId>
 	<artifactId>crawler</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>crawler</name>
 	<description>Demo project for Spring Boot</description>
